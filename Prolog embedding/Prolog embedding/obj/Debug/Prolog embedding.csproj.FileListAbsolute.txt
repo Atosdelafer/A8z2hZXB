@@ -1,0 +1,6 @@
+D:\Computing Science\Concepts of program design\Project\Prolog embedding\Prolog embedding\bin\Debug\Prolog embedding.exe.config
+D:\Computing Science\Concepts of program design\Project\Prolog embedding\Prolog embedding\obj\Debug\Prolog embedding.csprojResolveAssemblyReference.cache
+D:\Computing Science\Concepts of program design\Project\Prolog embedding\Prolog embedding\bin\Debug\Prolog embedding.exe
+D:\Computing Science\Concepts of program design\Project\Prolog embedding\Prolog embedding\bin\Debug\Prolog embedding.pdb
+D:\Computing Science\Concepts of program design\Project\Prolog embedding\Prolog embedding\obj\Debug\Prolog embedding.exe
+D:\Computing Science\Concepts of program design\Project\Prolog embedding\Prolog embedding\obj\Debug\Prolog embedding.pdb
