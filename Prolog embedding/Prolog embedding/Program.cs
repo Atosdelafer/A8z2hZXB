@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,22 +8,73 @@ using System.Text.RegularExpressions;
 
 namespace Prolog_embedding
 {
-    class Program
+    class Compound {
+		public string name;
+		public int arity;
+		public Dictionary<string,Compound>[] children; 
+		public ArrayList indices = new ArrayList();
+
+		public Compound(string name, int arity) {
+			this.name = name;
+			this.arity = arity;
+
+			if (arity == -1)
+				arity = 1;
+			this.children = new Dictionary<string, Compound>[arity];
+
+			for (int i = 0; i < arity; i++) {
+				children [i] = new Dictionary<string, Compound> ();
+			}
+		}
+	}
+
+	class Program
     {
+		static Compound index = new Compound ("root", -1);
+
         static void Main(string[] args)
         {
+		bool repeat = true;
 
-            while (true)
+            while (repeat)
             {
                 string teststring = Console.ReadLine();
+
+				if (teststring == null) {
+					teststring = "foo(bar, boz, a(b))";
+					repeat = false;
+				}
                 //bool check = isValidVariable(teststring);
                 //bool check = isValidCompound(teststring);
-                string liststring = listToCompound(teststring);
+                Console.WriteLine(teststring);
+				string liststring = listToCompound(teststring);
                 Console.WriteLine(liststring);
                 bool check = isValidCompound(liststring);
                 if (check)
                 {
                     Console.WriteLine("Yes");
+
+					addToNode (Program.index, "foo(bar)", 0, 0);
+					addToNode (Program.index, "foo(baz)", 1, 0);
+					addToNode (Program.index, "foo(bar(baz), boz)", 2, 0);
+					addToNode (Program.index, "foo(bar(baz), baz)", 3, 0);
+					addToNode (Program.index, "foo(bar(baz), baz(boz))", 4, 0);
+					printTree (Program.index, "");
+
+					Compound test = new Compound ("root", -1);
+
+					addToNode (test, "foo(bar(baz), baz(baz))", 0, 0);
+
+					int l = Program.index.indices.ToArray().Length;
+					int[] indices2 = new int[l];
+					for (int i = 0; i < l; i++)
+						indices2 [i] = (int)Program.index.indices [i];
+
+					int[] indices3 = {1, 2, 3, 4, 5};
+
+					int[] indices = findIndices (Program.index, test, 0, indices3);
+					Console.WriteLine (string.Join (",", indices));
+
                 }
                 else
                 {
@@ -30,6 +82,107 @@ namespace Prolog_embedding
                 }
             }
         }
+
+		static private void printTree(Compound node, string tabs) {
+
+			for (int parameter = 0; parameter < node.children.Length; parameter++) {
+				Console.WriteLine (tabs + parameter);
+				// Print all possible parameter values on a line
+
+				foreach (KeyValuePair<string, Compound> child in node.children[parameter]) {
+
+					Console.Write (tabs + "\t" + child.Value.name);
+					Console.WriteLine(": " + string.Join(",", child.Value.indices.ToArray()));
+
+					printTree (child.Value, tabs + "\t");
+				}
+	
+			}
+		}
+
+		static private void addToNode(Compound node, string compound, int index, int parameter) {
+
+			Tuple<string, int, ArrayList> pattern = termToPattern (compound);
+
+			string name = pattern.Item1;
+			int arity = pattern.Item2;
+			ArrayList children = pattern.Item3;
+
+			string key = name + '/' + arity;
+
+			if (!node.children[parameter].ContainsKey(key))
+				node.children[parameter].Add(key, new Compound(key, arity));
+			node.children [parameter] [key].indices.Add (index);
+
+
+			int p = 0;
+			foreach (string child in children) {
+				addToNode (node.children[parameter][key], child, index, p++);
+			}
+		}
+
+		static private Tuple<string, int, ArrayList> termToPattern(string term) {
+			int leftBrace = term.IndexOf ("(");
+			int rightBrace = term.LastIndexOf (")");
+			int arity;
+			string name;
+			ArrayList children = new ArrayList ();
+
+			if (leftBrace == -1) {
+				name = term;
+				arity = 0;
+			} else {
+
+				name = term.Substring (0, leftBrace);
+
+				int level = 0;
+				int left = leftBrace;
+				arity = 1;
+				for (int i = 0; i < term.Length; i++) {
+					if (term [i] == '(') {
+						level++;
+					} else if (term [i] == ')')
+						level--;
+					else if (term [i] == ',' && level == 1) {
+						arity++;
+						children.Add (term.Substring (left + 1, i - left - 1));
+						left = i + 1;
+					}
+				}
+				children.Add (term.Substring (left + 1, rightBrace - left - 1));
+			}
+
+			return new Tuple<string, int, ArrayList>(name, arity, children);
+		}
+
+		static private int[] findIndices(Compound index, Compound node, int parameter, int[] indices) {
+
+			for (int p = 0; p < node.children.Length; p++) {
+				// Print all possible parameter values on a line
+
+				foreach (KeyValuePair<string, Compound> child in node.children[p]) {
+
+					if (!index.children [p].ContainsKey (child.Value.name)) {
+						return new int[] {};
+					}
+
+					int l = index.children[p][child.Value.name].indices.ToArray ().Length;
+					int[] indices2 = new int[l];
+					for (int i = 0; i < l; i++)
+						indices2 [i] = (int)index.children[p][child.Value.name].indices [i];
+
+					indices = indices.Intersect(indices2).ToArray();
+					if (!index.children[p].ContainsKey(child.Value.name)) return indices;
+					string key = child.Value.name;
+
+					int[] indicesReturned = findIndices(index.children[p][key], child.Value, p, indices);
+					indices = indices.Intersect(indicesReturned).ToArray();
+
+				}
+
+			}
+			return indices;
+		}
 
         //small error still.
         static private string listToCompound(string term)
