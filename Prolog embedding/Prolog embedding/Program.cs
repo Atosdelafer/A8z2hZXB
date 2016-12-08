@@ -48,13 +48,14 @@ namespace Prolog_embedding
                 {
                     for (int j = numberofcommas; j >0; j--)
                     {
-                        compoundterm.Insert(j, ")");
+                        compoundterm = compoundterm.Insert(i, ")");
+                        numberofcommas--;
                     }                    
                 }
             }
 
             compoundterm = compoundterm.Replace(",", ",.(");
-            compoundterm = compoundterm.Replace("emptylist", ",[])");            
+            compoundterm = compoundterm.Replace("emptylist", ",[]");            
             return compoundterm;
         }
 
@@ -147,3 +148,4 @@ namespace Prolog_embedding
 
 //[a] = dot(a,emptylist)
 //[[a,b],c] = dot(dot(a,dot(b,emptylist)),dot(c,emptylist))
+// loves(man(eric),woman(julia))
