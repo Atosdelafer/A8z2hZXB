@@ -11,35 +11,61 @@ namespace Prolog_embedding
     {
         static void Main(string[] args)
         {
-            
+
             while (true)
             {
                 string teststring = Console.ReadLine();
                 //bool check = isValidVariable(teststring);
-                bool check = isValidCompound(teststring);
-            }                        
-        }
-
-        static private string listtocompound(string term)
-        {
-            for (int i = 0; i < term.Length; i++)
-            {
-                if (term[i] == '[')
+                //bool check = isValidCompound(teststring);
+                string liststring = listToCompound(teststring);
+                Console.WriteLine(liststring);
+                bool check = isValidCompound(liststring);
+                if (check)
                 {
-                    term[i] == dot()
+                    Console.WriteLine("Yes");
+                }
+                else
+                {
+                    Console.WriteLine("No");
                 }
             }
-            string compoundterm;
+        }
+
+        //small error still.
+        static private string listToCompound(string term)
+        {
+            int numberofcommas = 0;
+            string compoundterm = term.Replace("[", ".(");
+            compoundterm = compoundterm.Replace("]", "emptylist)");  
+
+            for (int i = 0; i < compoundterm.Length; i++)
+            {
+                if (compoundterm[i] == ',')
+                {
+                    numberofcommas++;
+                }
+                else if (compoundterm[i] == ')' && numberofcommas != 0)
+                {
+                    for (int j = numberofcommas; j >0; j--)
+                    {
+                        compoundterm.Insert(j, ")");
+                    }                    
+                }
+            }
+
+            compoundterm = compoundterm.Replace(",", ",.(");
+            compoundterm = compoundterm.Replace("emptylist", ",[])");            
             return compoundterm;
         }
 
         static private bool isValidCompound(string term)
         {
 
-            bool correctcompound = true;
+            bool nocomma = true;
             int outerleftbrace = 0;
             int numberofbraces = 0;
-            int outerrightbrace = 0;            
+            int outerrightbrace = 0;
+                        
 
             for (int i = 0; i < term.Length; i++)
             {
@@ -62,19 +88,33 @@ namespace Prolog_embedding
                 }
                 else if (term[i] == ',' && numberofbraces == 0)
                 {
-                    if (!(isValidCompound(term.Substring(0, i - 1)) && isValidCompound(term.Substring(i+1))))
+                    nocomma = false;
+                    if (!(isValidCompound(term.Substring(0, i)) && isValidCompound(term.Substring(i+1))))
                     {
                         return false;
                     }                   
                 }
             }
 
-            correctcompound = isValidTerm(term.Substring(0, outerleftbrace - 1));
+            if (numberofbraces != 0)
+            {
+                return false;
+            }
 
+            if (nocomma == true && outerleftbrace != 0)
+            {
+                if (!(isValidCompound(term.Substring(outerleftbrace + 1, (outerrightbrace - 1)-(outerleftbrace)))))
+                {
+                    return false;
+                }
+            }
 
-            Console.WriteLine(outerleftbrace);
-            Console.WriteLine(outerrightbrace);
-            return correctcompound;
+            if (!(isValidTerm(term.Substring(0, outerleftbrace))))
+            {
+                return false;
+            }
+
+            return true;            
         }
 
         static private bool isValidTerm(string term)
@@ -84,7 +124,7 @@ namespace Prolog_embedding
             if (match.Success)
             {                
                 string key = match.Groups[0].Value;
-                Console.WriteLine(key);                
+                //Console.WriteLine(key);                
             }
             return true;
         }
@@ -96,7 +136,7 @@ namespace Prolog_embedding
             if (match.Success)
             {
                 string key = match.Groups[0].Value;
-                Console.WriteLine(key);
+                //Console.WriteLine(key);
             }
             return true;
         }
