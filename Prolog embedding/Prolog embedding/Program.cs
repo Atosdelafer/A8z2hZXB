@@ -58,12 +58,12 @@ namespace Prolog_embedding
 					addToNode (Program.index, "foo(baz)", 1, 0);
 					addToNode (Program.index, "foo(bar(baz), boz)", 2, 0);
 					addToNode (Program.index, "foo(bar(baz), baz)", 3, 0);
-					addToNode (Program.index, "foo(bar(baz), baz(boz))", 4, 0);
+					addToNode (Program.index, "foo(bar(baz), baz(foo))", 4, 0);
 					printTree (Program.index, "");
 
 					Compound test = new Compound ("root", -1);
 
-					addToNode (test, "foo(bar(baz), baz(baz))", 0, 0);
+					addToNode (test, "foo(bar(baz), X)", 0, 0);
 
 					int l = Program.index.indices.ToArray().Length;
 					int[] indices2 = new int[l];
@@ -156,23 +156,37 @@ namespace Prolog_embedding
 		}
 
 		static private int[] findIndices(Compound index, Compound node, int parameter, int[] indices) {
-
+			int[] indices2;
+			int l;
 			for (int p = 0; p < node.children.Length; p++) {
 				// Print all possible parameter values on a line
 
 				foreach (KeyValuePair<string, Compound> child in node.children[p]) {
 
+					if (Regex.Match (child.Value.name, "^[A-Z_]").Success) {
+						Console.WriteLine (child.Value.indices);
+
+						l = index.indices.ToArray ().Length;
+						indices2 = new int[l];
+						for (int i = 0; i < l; i++)
+							indices2 [i] = (int)index.indices [i];
+						return indices2;
+
+					}
+
 					if (!index.children [p].ContainsKey (child.Value.name)) {
 						return new int[] {};
 					}
 
-					int l = index.children[p][child.Value.name].indices.ToArray ().Length;
-					int[] indices2 = new int[l];
+					l = index.children[p][child.Value.name].indices.ToArray ().Length;
+					indices2 = new int[l];
 					for (int i = 0; i < l; i++)
 						indices2 [i] = (int)index.children[p][child.Value.name].indices [i];
 
 					indices = indices.Intersect(indices2).ToArray();
+
 					if (!index.children[p].ContainsKey(child.Value.name)) return indices;
+
 					string key = child.Value.name;
 
 					int[] indicesReturned = findIndices(index.children[p][key], child.Value, p, indices);
