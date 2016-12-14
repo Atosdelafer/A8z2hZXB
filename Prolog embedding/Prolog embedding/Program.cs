@@ -40,11 +40,6 @@ namespace Prolog_embedding
             while (repeat)
             {
                 string teststring = Console.ReadLine();
-
-				if (teststring == null) {
-					teststring = "foo(bar, boz, a(b))";
-					repeat = false;
-				}                
                 Console.WriteLine(teststring);
                 String[] filecontent = Parser();
 				string liststring = listToCompound(teststring);
@@ -355,7 +350,7 @@ namespace Prolog_embedding
         {
             bool previousCharIsColumn = false;
             string head = "{}";
-            string tail = "{}";         
+            string tail = "{}";   
             for (int i = 0; i < term.Length; i++)
             {
                 if (term[i] == ':')
