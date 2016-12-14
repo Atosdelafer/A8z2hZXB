@@ -35,6 +35,7 @@ namespace Prolog_embedding
         static void Main(string[] args)
         {
 		bool repeat = true;
+        bool check = true;
 
             while (repeat)
             {
@@ -47,9 +48,25 @@ namespace Prolog_embedding
                 //bool check = isValidVariable(teststring);
                 //bool check = isValidCompound(teststring);
                 Console.WriteLine(teststring);
+                String[] filecontent = Parser();
 				string liststring = listToCompound(teststring);
                 Console.WriteLine(liststring);
-                bool check = isValidCompound(liststring);
+                int linenumber = 0;
+                foreach (string line in filecontent)
+                {
+                    check = isValidCompound(line);
+                    if (check)
+                    {
+                        Console.WriteLine("Yes");
+                        addToNode(Program.index, line, linenumber, 0);
+                        linenumber++;
+                    }
+                }
+                addToNode(Program.index, "loves(testperson1,testperson2)", 30, 0);
+                printTree(Program.index, "");
+
+                /*
+                check = isValidCompound(liststring);
                 if (check)
                 {
                     Console.WriteLine("Yes");
@@ -59,7 +76,7 @@ namespace Prolog_embedding
 					addToNode (Program.index, "foo(bar(baz), boz)", 2, 0);
 					addToNode (Program.index, "foo(bar(baz), baz)", 3, 0);
 					addToNode (Program.index, "foo(bar(baz), baz(foo))", 4, 0);
-					printTree (Program.index, "");
+					printTree (Program.index, "loves(testperson1,testperson2)",30,0);
 
 					Compound test = new Compound ("root", -1);
 
@@ -80,7 +97,30 @@ namespace Prolog_embedding
                 {
                     Console.WriteLine("No");
                 }
+                */
             }
+        }
+
+        static private String[] Parser()
+        {
+            string[] lines = System.IO.File.ReadAllLines(@"D:\Computing Science\Concepts of program design\testfile.txt");
+
+            // Display the file contents by using a foreach loop.
+            //System.Console.WriteLine("Contents of WriteLines2.txt = ");
+
+
+            /* foreach (string line in lines)
+            {
+                // Use a tab to indent each line of the file.
+                Console.WriteLine("\t" + line);
+            }*/
+
+            return lines;
+
+            /*// Keep the console window open in debug mode.
+            Console.WriteLine("Press any key to exit.");
+            System.Console.ReadKey();*/
+            
         }
 
 		static private void printTree(Compound node, string tabs) {
