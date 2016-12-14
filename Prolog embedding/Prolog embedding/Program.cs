@@ -103,7 +103,7 @@ namespace Prolog_embedding
 
         static private String[] Parser()
         {
-            string[] lines = System.IO.File.ReadAllLines(@"D:\Computing Science\Concepts of program design\testfile.txt");
+            string[] lines = System.IO.File.ReadAllLines(@"testfile.txt");
 
             // Display the file contents by using a foreach loop.
             //System.Console.WriteLine("Contents of WriteLines2.txt = ");
