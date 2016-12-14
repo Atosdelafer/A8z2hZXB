@@ -44,9 +44,7 @@ namespace Prolog_embedding
 				if (teststring == null) {
 					teststring = "foo(bar, boz, a(b))";
 					repeat = false;
-				}
-                //bool check = isValidVariable(teststring);
-                //bool check = isValidCompound(teststring);
+				}                
                 Console.WriteLine(teststring);
                 String[] filecontent = Parser();
 				string liststring = listToCompound(teststring);
@@ -54,7 +52,14 @@ namespace Prolog_embedding
                 int linenumber = 0;
                 foreach (string line in filecontent)
                 {
-                    check = isValidCompound(line);
+                    if (isValidCompound(line) || isValidClause(line))
+                    {
+                        check = true;
+                    }
+                    else
+                    {
+                        check = false;
+                    }                    
                     if (check)
                     {
                         Console.WriteLine("Yes");
@@ -62,7 +67,7 @@ namespace Prolog_embedding
                         linenumber++;
                     }
                 }
-                addToNode(Program.index, "loves(testperson1,testperson2)", 30, 0);
+                
                 printTree(Program.index, "");
 
                 /*
@@ -70,7 +75,7 @@ namespace Prolog_embedding
                 if (check)
                 {
                     Console.WriteLine("Yes");
-
+                    addToNode(Program.index, "loves(testperson1,testperson2)", 30, 0);
 					addToNode (Program.index, "foo(bar)", 0, 0);
 					addToNode (Program.index, "foo(baz)", 1, 0);
 					addToNode (Program.index, "foo(bar(baz), boz)", 2, 0);
@@ -103,24 +108,23 @@ namespace Prolog_embedding
 
         static private String[] Parser()
         {
+            bool endsInPeriod = true;
+            char[] charsToTrim = {'.', ' '};
             string[] lines = System.IO.File.ReadAllLines(@"testfile.txt");
-
-            // Display the file contents by using a foreach loop.
-            //System.Console.WriteLine("Contents of WriteLines2.txt = ");
-
-
-            /* foreach (string line in lines)
+            for (int i = 0; i < lines.Length; i++)
             {
-                // Use a tab to indent each line of the file.
-                Console.WriteLine("\t" + line);
-            }*/
-
-            return lines;
-
-            /*// Keep the console window open in debug mode.
-            Console.WriteLine("Press any key to exit.");
-            System.Console.ReadKey();*/
-            
+                endsInPeriod = lines[i].EndsWith(".");
+                if (endsInPeriod)
+                {
+                    lines[i] = lines[i].TrimEnd(charsToTrim);
+                }
+                else
+                {
+                    lines[i] = "";
+                }
+                isValidClause(lines[i]);
+            }                     
+            return lines;            
         }
 
 		static private void printTree(Compound node, string tabs) {
@@ -186,7 +190,7 @@ namespace Prolog_embedding
 					else if (term [i] == ',' && level == 1) {
 						arity++;
 						children.Add (term.Substring (left + 1, i - left - 1));
-						left = i + 1;
+						left = i;
 					}
 				}
 				children.Add (term.Substring (left + 1, rightBrace - left - 1));
@@ -317,11 +321,20 @@ namespace Prolog_embedding
                 }
             }
 
-            if (!(isValidTerm(term.Substring(0, outerleftbrace))))
+            if (outerleftbrace != 0)
             {
-                return false;
+                if (!(isValidTerm(term.Substring(0, outerleftbrace))))
+                {
+                    return false;
+                }
             }
-
+            else if (nocomma == true)
+            {
+                if (!(isValidTerm(term)))
+                {
+                    return false;
+                }
+            }    
             return true;            
         }
 
@@ -332,8 +345,38 @@ namespace Prolog_embedding
             if (match.Success)
             {                
                 string key = match.Groups[0].Value;
+                return true;
                 //Console.WriteLine(key);                
             }
+            return false;
+        }
+
+        static private bool isValidClause(string term)
+        {
+            bool previousCharIsColumn = false;
+            string head = "{}";
+            string tail = "{}";         
+            for (int i = 0; i < term.Length; i++)
+            {
+                if (term[i] == ':')
+                {
+                    previousCharIsColumn = true;                
+                }
+                else if (term[i] == '-')
+                {
+                    if (previousCharIsColumn)
+                    {
+                        head = term.Substring(0, i - 1);
+                        tail = term.Substring(i+1);
+                    }
+                }
+            }
+            if (!(isValidCompound(head) && isValidCompound(tail)))
+            {
+                Console.WriteLine("no");
+                return false;
+            }            
+            Console.WriteLine("yes");
             return true;
         }
 
@@ -344,9 +387,10 @@ namespace Prolog_embedding
             if (match.Success)
             {
                 string key = match.Groups[0].Value;
+                return true;
                 //Console.WriteLine(key);
             }
-            return true;
+            return false;
         }
     }
 }
