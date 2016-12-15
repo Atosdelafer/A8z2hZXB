@@ -35,7 +35,6 @@ namespace Prolog_embedding
 
         static void Main(string[] args)
         {
-
 			//storeClauseTail ("foo(bar),doz(coo)", 0);
 			
 		    bool repeat = true;
@@ -63,33 +62,11 @@ namespace Prolog_embedding
                         // new clause rail function: addToClauseTree(Newtree, ClauseCheck.Item3, linenumber, 0);
                         linenumber++;
                     }
-                   /* else
-                    {
-                        check = false;
-                    }                    
-                    if (check)
-                    {
-                        Console.WriteLine("Compound");
-                        addToNode(Program.index, line, linenumber, 0);
-                        linenumber++;
-                    }*/
                 }
                 
                 printTree(Program.index, "");
-
+                
                 /*
-                check = isValidCompound(liststring);
-                if (check)
-                {
-                    Console.WriteLine("Yes");
-                    addToNode(Program.index, "loves(testperson1,testperson2)", 30, 0);
-					addToNode (Program.index, "foo(bar)", 0, 0);
-					addToNode (Program.index, "foo(baz)", 1, 0);
-					addToNode (Program.index, "foo(bar(baz), boz)", 2, 0);
-					addToNode (Program.index, "foo(bar(baz), baz)", 3, 0);
-					addToNode (Program.index, "foo(bar(baz), baz(foo))", 4, 0);
-					printTree (Program.index, "loves(testperson1,testperson2)",30,0);
-
 					Compound test = new Compound ("root", -1);
 
 					addToNode (test, "foo(bar(baz), X)", 0, 0);
@@ -103,12 +80,6 @@ namespace Prolog_embedding
 
 					int[] indices = findIndices (Program.index, test, 0, indices3);
 					Console.WriteLine (string.Join (",", indices));
-
-                }
-                else
-                {
-                    Console.WriteLine("No");
-                }
                 */
             }
 
@@ -249,7 +220,6 @@ namespace Prolog_embedding
 			return indices;
 		}
 
-        //small error still.
         static private string listToCompound(string term)
         {
             int numberofcommas = 0;
@@ -442,9 +412,3 @@ namespace Prolog_embedding
         }
     }
 }
-
-// todo: lists in this manner + recursion coumpoundcheck
-
-//[a] = dot(a,emptylist)
-//[[a,b],c] = dot(dot(a,dot(b,emptylist)),dot(c,emptylist))
-// loves(man(eric),woman(julia))
