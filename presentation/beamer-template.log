@@ -1,0 +1,32 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=pdflatex 2016.12.7)  14 DEC 2016 12:58
+entering extended mode
+ \write18 enabled.
+ %&-line parsing enabled.
+**beamer-template.tex
+(./beamer-template.tex
+LaTeX2e <2016/03/31> patch level 3
+Babel <3.9r> and hyphenation patterns for 32 language(s) loaded.
+
+! LaTeX Error: File `$documentclass$.cls' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: cls)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.2 \setbeamertemplate
+                      {caption}[numbered]^^M
+*** (cannot \read from terminal in nonstop modes)
+
+ 
+Here is how much of TeX's memory you used:
+ 11 strings out of 494317
+ 272 string characters out of 6163512
+ 48610 words of memory out of 5000000
+ 3448 multiletter control sequences out of 15000+600000
+ 3640 words of font info for 14 fonts, out of 8000000 for 9000
+ 372 hyphenation exceptions out of 8191
+ 10i,0n,7p,228b,8s stack positions out of 5000i,500n,10000p,200000b,80000s
+!  ==> Fatal error occurred, no output PDF file produced!
