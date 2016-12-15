@@ -36,9 +36,9 @@ namespace Prolog_embedding
         static void Main(string[] args)
         {
 
-			storeClauseTail ("foo(bar),doz(coo)", 0);
-			return;
-		bool repeat = true;
+			//storeClauseTail ("foo(bar),doz(coo)", 0);
+			
+		    bool repeat = true;
             while (repeat)
             {
                 string teststring = Console.ReadLine();
@@ -72,7 +72,7 @@ namespace Prolog_embedding
                         Console.WriteLine("Compound");
                         addToNode(Program.index, line, linenumber, 0);
                         linenumber++;
-                    }
+                    }*/
                 }
                 
                 printTree(Program.index, "");
