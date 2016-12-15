@@ -35,8 +35,6 @@ namespace Prolog_embedding
         static void Main(string[] args)
         {
 		bool repeat = true;
-        bool check = true;
-
             while (repeat)
             {
                 string teststring = Console.ReadLine();
@@ -47,20 +45,21 @@ namespace Prolog_embedding
                 int linenumber = 0;
                 foreach (string line in filecontent)
                 {
+                    var ClauseCheck = isValidAndDecomposesClause(line);
                     if (isValidCompound(line))
-                    {
-                        //check = true;
+                    {                        
                         Console.WriteLine("Compound");
                         addToNode(Program.index, line, linenumber, 0);
                         linenumber++;
                     }
-                    else if (isValidClause(line))
-                    {
-                        // check = true
+                    else if (ClauseCheck.Item1)
+                    {                        
                         Console.WriteLine("Clause");
-                        //clause adding method.
+                        addToNode(Program.index, ClauseCheck.Item2, linenumber, 0);
+                        // new clause rail function: addToClauseTree(Newtree, ClauseCheck.Item3, linenumber, 0);
+                        linenumber++;
                     }
-                    else
+                   /* else
                     {
                         check = false;
                     }                    
@@ -126,7 +125,6 @@ namespace Prolog_embedding
                 {
                     lines[i] = "";
                 }
-                isValidClause(lines[i]);
             }                     
             return lines;            
         }
@@ -355,11 +353,13 @@ namespace Prolog_embedding
             return false;
         }
 
-        static private bool isValidClause(string term)
+        static private Tuple<Boolean, String, String> isValidAndDecomposesClause(string term)
         {
             bool previousCharIsColumn = false;
+            bool isValidClause = false;
             string head = "{}";
-            string tail = "{}";   
+            string tail = "{}";
+            
             for (int i = 0; i < term.Length; i++)
             {
                 if (term[i] == ':')
@@ -377,11 +377,18 @@ namespace Prolog_embedding
             }
             if (!(isValidCompound(head) && isValidCompound(tail)))
             {
-                Console.WriteLine("no");
-                return false;
-            }            
-            Console.WriteLine("yes");
-            return true;
+                isValidClause = false;
+            }        
+            isValidClause = true;
+
+            var tuple = new Tuple<Boolean, String, String>(isValidClause, head,tail);
+            return tuple;
+        }
+
+        private static Tuple<int, int> Add_Multiply(int a, int b)
+        {
+            var tuple = new Tuple<int, int>(a + b, a * b);
+            return tuple;
         }
 
         static private bool isValidVariable(string term)
