@@ -31,9 +31,13 @@ namespace Prolog_embedding
 	class Program
     {
 		static Compound index = new Compound ("root", -1);
+		static Dictionary<int, Compound[]> clauseTails = new Dictionary<int, Compound[]> ();
 
         static void Main(string[] args)
         {
+
+			storeClauseTail ("foo(bar),doz(coo)", 0);
+			return;
 		bool repeat = true;
         bool check = true;
 
@@ -69,7 +73,7 @@ namespace Prolog_embedding
                         Console.WriteLine("Compound");
                         addToNode(Program.index, line, linenumber, 0);
                         linenumber++;
-                    }*/
+                    }
                 }
                 
                 printTree(Program.index, "");
@@ -108,6 +112,7 @@ namespace Prolog_embedding
                 }
                 */
             }
+
         }
 
         static private String[] Parser()
@@ -383,6 +388,38 @@ namespace Prolog_embedding
             Console.WriteLine("yes");
             return true;
         }
+
+		static private void storeClauseTail(string tail, int linenumber)
+		{
+			int level = 0;
+			string buffer = "";
+			List<Compound> children = new List<Compound> ();
+
+			foreach (char c in tail) {
+				if (c == '(')
+					level++;
+				else if (c == ')')
+					level--;
+				else if (c == ',' && level == 0) {
+					Compound child = new Compound ("root", -1);
+					addToNode (child, buffer, 0, 0);
+					children.Add (child);
+					buffer = "";
+				} 
+
+				if (!(c == ',' && level == 0)) {
+					buffer += c;
+				}
+			}
+
+			if (buffer != "") {
+				Compound child = new Compound ("root", -1);
+				addToNode (child, buffer, 0, 0);
+				children.Add (child);
+			}
+
+			Program.clauseTails.Add (0, children.ToArray ());
+		}
 
         static private bool isValidVariable(string term)
         {
