@@ -47,9 +47,18 @@ namespace Prolog_embedding
                 int linenumber = 0;
                 foreach (string line in filecontent)
                 {
-                    if (isValidCompound(line) || isValidClause(line))
+                    if (isValidCompound(line))
                     {
-                        check = true;
+                        //check = true;
+                        Console.WriteLine("Compound");
+                        addToNode(Program.index, line, linenumber, 0);
+                        linenumber++;
+                    }
+                    else if (isValidClause(line))
+                    {
+                        // check = true
+                        Console.WriteLine("Clause");
+                        //clause adding method.
                     }
                     else
                     {
@@ -57,10 +66,10 @@ namespace Prolog_embedding
                     }                    
                     if (check)
                     {
-                        Console.WriteLine("Yes");
+                        Console.WriteLine("Compound");
                         addToNode(Program.index, line, linenumber, 0);
                         linenumber++;
-                    }
+                    }*/
                 }
                 
                 printTree(Program.index, "");
