@@ -39,8 +39,56 @@ namespace PrologEmbedding
 					Console.WriteLine (treeArray.Value [i].toString () + ":" + treeArray.Key);
 				}
 			}
+            inference();
+        }
 
-			Console.WriteLine(String.Join(",", index.getMatchingTrees (new TermTree ("loves(X,X)"))));
+        static private void inference()
+        {
+            string inputline;
+            int[] matchresult;
+            bool inKnowledgeBase;
+            while (true)
+            {
+                inputline = Console.ReadLine();
+                matchresult = index.getMatchingTrees(new TermTree(inputline));
+                foreach (int i in matchresult)
+                {
+                    inKnowledgeBase = headRecursion(new int[1] { i });
+                    if (inKnowledgeBase)
+                    {
+                        Console.WriteLine("True");
+                    }
+                    else
+                    {
+                        Console.WriteLine("False");
+                    }
+                }
+            }        
+        }
+
+        static private Boolean headRecursion(int[] matchresult)
+        {
+            if (matchresult.Length == 0)
+            {
+                return false;
+            }
+            else
+            {
+                foreach (int i in matchresult)
+                {
+                    if (clauseTails.ContainsKey(i))
+                    {
+                        foreach (TermTree tree in clauseTails[i])
+                        {
+                            if (!headRecursion(index.getMatchingTrees(tree)))
+                            {
+                                return false;
+                            }
+                        }                        
+                    }
+                }
+                return true;
+            }
         }
 
 		static private void storeClauseTail(string tail, int linenumber)
