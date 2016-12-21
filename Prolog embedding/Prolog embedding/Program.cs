@@ -39,6 +39,8 @@ namespace PrologEmbedding
 					Console.WriteLine (treeArray.Value [i].toString () + ":" + treeArray.Key);
 				}
 			}
+
+			Console.WriteLine(String.Join(",", index.getMatchingTrees (new TermTree ("loves(X,X)"))));
         }
 
 		static private void storeClauseTail(string tail, int linenumber)
