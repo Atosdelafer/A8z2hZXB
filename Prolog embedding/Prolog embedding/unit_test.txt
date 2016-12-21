@@ -1,0 +1,87 @@
+FORMAT:
+Script (S): 
+Query (Q): true.
+Result (R): true.
+
+————————————————————————
+TERMS:
+S: atom.
+Q: atom.
+R: true.
+
+S: atom(atom1, atom2).
+Q: atom.
+R: false.
+
+S: atom(atom1, atom2).
+Q: atom(atom1, atom2).
+R: true.
+
+————————————————————————
+CLAUSES:
+S: atom1.
+atom2 :- atom1.
+Q: atom2.
+R: true.
+
+S: atom3 :- true.
+atom3 :- false.
+Q: atom3.
+R: true
+false.
+
+———————————————————————
+UNIFICATION:
+s: foo(bar).
+foo(bar2).
+Q: foo(X).
+R: bar
+bar2.
+
+S: vertical(line(point(X,Y),point(X,Z))).                                                                                
+horizontal(line(point(X,Y),point(Z,Y))). 
+Q: vertical(line(point(1, 2), point(1, 3))).
+R: true.
+
+S: wizard(ron).
+hasWand(harry).
+wizard(X) :- hasWand(X).
+Q: wizard(X).
+R: ron, harry.
+
+S:
+Q: =(atom1, atom2).
+R: false.
+
+S:
+Q: =(atom1, atom2).
+R: false.
+
+
+S:
+Q: =(31, 1 + 2).
+R: false. (!!)
+
+S:
+Q: =(atom, X).
+R: X = atom.
+
+S:
+Q: =(atom1, ‘atom1’).
+R: true.
+
+S:
+Q: =(atom1, “atom1”).
+R: false.
+
+S:
+Q: =(1, ‘1’).
+R: false.
+
+S: bar(X) :- X==1.foo(X) :- bar(X).
+Q: foo(1).
+R: true.
+
+S: B.D.A :- B.A :- C.A :- D.
+Q: ?
+R: ? (crashes)
