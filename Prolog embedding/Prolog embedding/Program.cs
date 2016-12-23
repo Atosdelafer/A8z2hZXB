@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PrologEmbedding
 {
@@ -46,52 +47,108 @@ namespace PrologEmbedding
         {
             string inputline;
             int[] matchresult;
-            bool inKnowledgeBase;
+            //bool[] inKnowledgeBase;
+            List<bool> inKnowledgeBase = new List<bool>();
+            
             while (true)
             {
                 inputline = Console.ReadLine();
                 matchresult = index.getMatchingTrees(new TermTree(inputline));
-                foreach (int i in matchresult)
+
+                inKnowledgeBase = headRecursion(matchresult);
+                foreach (bool item in inKnowledgeBase)
                 {
-                    inKnowledgeBase = headRecursion(new int[1] { i });
-                    if (inKnowledgeBase)
-                    {
-                        Console.WriteLine("True");
-                    }
-                    else
-                    {
-                        Console.WriteLine("False");
-                    }
+                    Console.WriteLine(item);
                 }
             }        
         }
 
-        static private Boolean headRecursion(int[] matchresult)
+        static private List<bool> headRecursion(int[] matchresult)
         {
+            List<bool> recursionList = new List<bool>();
             if (matchresult.Length == 0)
             {
-                return false;
+                recursionList.Add(false);
             }
             else
             {
+                //for (int i = 0; i < matchresult.Length; i++)
                 foreach (int i in matchresult)
                 {
-                    if (clauseTails.ContainsKey(i))
+                    if (!clauseTails.ContainsKey(i))
                     {
-                        foreach (TermTree tree in clauseTails[i])
+                        recursionList.Add(true);
+                    }
+                    else 
+                    {
+                        int clauseTailsLength = clauseTails[i].Length;
+                        if (clauseTailsLength > 1)
                         {
-                            if (!headRecursion(index.getMatchingTrees(tree)))
+                            //split
+                            List<bool>[] multipleClauses = new List<bool>[clauseTailsLength];
+                            int[] countingmechanism = new int[clauseTailsLength];
+                            int[] countingmechanismcap = new int[clauseTailsLength];
+                            int numberofrounds = 1;
+                            for (int j = 0; j < clauseTailsLength; j++)
                             {
-                                return false;
+                                multipleClauses[j] = headRecursion(index.getMatchingTrees(clauseTails[i][j]));
+                                countingmechanismcap[j] = multipleClauses[j].Count;
+                                numberofrounds *= multipleClauses[j].Count;
                             }
-                        }                        
+                            //merge
+                            int currentslot = clauseTailsLength - 1;
+                            for (int k = 0; k < numberofrounds; k++)
+                            {
+                                bool finalcheck = true;
+
+                                for (int z = 0; z < clauseTailsLength; z++)
+                                {
+                                    if (!multipleClauses[z].ElementAt(countingmechanism[z]))
+                                    {
+                                        finalcheck = false;
+                                    }
+                                }
+                                
+                                if (finalcheck)
+                                {
+                                    recursionList.Add(true);
+                                }
+                                else
+                                {
+                                    recursionList.Add(false);
+                                }
+                               
+                                if (countingmechanism[currentslot] < countingmechanismcap[currentslot] - 1)
+                                {
+                                    countingmechanism[currentslot]++;
+                                }
+                                else
+                                {
+                                    while (countingmechanism[currentslot] == countingmechanismcap[currentslot]- 1 && currentslot != 0)
+                                    {
+                                        currentslot--;
+                                        
+                                    }
+                                    countingmechanism[currentslot]++;
+                                    for (int l = clauseTailsLength - 1; l > currentslot; l--)
+                                    {
+                                        countingmechanism[l] = 0;
+                                    }
+                                    currentslot = clauseTailsLength - 1;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            recursionList.AddRange(headRecursion(index.getMatchingTrees(clauseTails[i][0])));
+                        }
                     }
                 }
-                return true;
             }
+            return recursionList;
         }
 
-		static private void storeClauseTail(string tail, int linenumber)
+        static private void storeClauseTail(string tail, int linenumber)
 		{
 			int level = 0;
 			string buffer = "";
@@ -123,7 +180,7 @@ namespace PrologEmbedding
         {
             bool endsInPeriod = true;
             char[] charsToTrim = {'.', ' '};
-            string[] lines = System.IO.File.ReadAllLines(@"testfile.txt");
+            string[] lines = System.IO.File.ReadAllLines(@"testfile3.txt");
             for (int i = 0; i < lines.Length; i++)
             {
                 endsInPeriod = lines[i].EndsWith(".");

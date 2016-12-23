@@ -1,0 +1,10 @@
+party:-music,dancing,alcohol.
+music.
+loudnoise.
+music:-loudnoise.
+dancing.
+dancing:-moves.
+dancing:-loudnoise.
+alcohol.
+alcohol:-beer.
+
