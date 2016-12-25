@@ -2,12 +2,10 @@ party.
 drunk.
 beer.
 chips.
-sleepy.
 party:-beer.
 party:-chips.
-sleepy:-notatall.
+sleepy:-beer.
 drunk:-beer.
 me:-party.
 me:-drunk,sleepy.
-
 

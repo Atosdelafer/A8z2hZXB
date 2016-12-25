@@ -1,0 +1,5 @@
+/home/wr/Documenten/A8z2hZXB/Prolog embedding/Prolog embedding/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/home/wr/Documenten/A8z2hZXB/Prolog embedding/Prolog embedding/bin/Debug/Linux.exe.mdb
+/home/wr/Documenten/A8z2hZXB/Prolog embedding/Prolog embedding/bin/Debug/Linux.exe
+/home/wr/Documenten/A8z2hZXB/Prolog embedding/Prolog embedding/obj/x86/Debug/Linux.exe
+/home/wr/Documenten/A8z2hZXB/Prolog embedding/Prolog embedding/obj/x86/Debug/Linux.exe.mdb

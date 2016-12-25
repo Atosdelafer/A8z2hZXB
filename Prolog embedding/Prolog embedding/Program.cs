@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PrologEmbedding
 {
@@ -39,9 +40,115 @@ namespace PrologEmbedding
 					Console.WriteLine (treeArray.Value [i].toString () + ":" + treeArray.Key);
 				}
 			}
+            inference();
         }
 
-		static private void storeClauseTail(string tail, int linenumber)
+        static private void inference()
+        {
+            string inputline;
+            int[] matchresult;
+            //bool[] inKnowledgeBase;
+            List<bool> inKnowledgeBase = new List<bool>();
+            
+            while (true)
+            {
+                inputline = Console.ReadLine();
+                matchresult = index.getMatchingTrees(new TermTree(inputline));
+
+                inKnowledgeBase = headRecursion(matchresult);
+                foreach (bool item in inKnowledgeBase)
+                {
+                    Console.WriteLine(item);
+                }
+            }        
+        }
+
+        static private List<bool> headRecursion(int[] matchresult)
+        {
+            List<bool> recursionList = new List<bool>();
+            if (matchresult.Length == 0)
+            {
+                recursionList.Add(false);
+            }
+            else
+            {
+                //for (int i = 0; i < matchresult.Length; i++)
+                foreach (int i in matchresult)
+                {
+                    if (!clauseTails.ContainsKey(i))
+                    {
+                        recursionList.Add(true);
+                    }
+                    else 
+                    {
+                        int clauseTailsLength = clauseTails[i].Length;
+                        if (clauseTailsLength > 1)
+                        {
+                            //split
+                            List<bool>[] multipleClauses = new List<bool>[clauseTailsLength];
+                            int[] countingmechanism = new int[clauseTailsLength];
+                            int[] countingmechanismcap = new int[clauseTailsLength];
+                            int numberofrounds = 1;
+                            for (int j = 0; j < clauseTailsLength; j++)
+                            {
+                                multipleClauses[j] = headRecursion(index.getMatchingTrees(clauseTails[i][j]));
+                                countingmechanismcap[j] = multipleClauses[j].Count;
+                                numberofrounds *= multipleClauses[j].Count;
+                            }
+                            //merge
+                            int currentslot = clauseTailsLength - 1;
+                            for (int k = 0; k < numberofrounds; k++)
+                            {
+                                bool finalcheck = true;
+
+                                for (int z = 0; z < clauseTailsLength; z++)
+                                {
+                                    if (!multipleClauses[z].ElementAt(countingmechanism[z]))
+                                    {
+                                        finalcheck = false;
+                                    }
+                                }
+                                
+                                if (finalcheck)
+                                {
+                                    recursionList.Add(true);
+                                }
+                                else
+                                {
+                                    recursionList.Add(false);
+                                }
+                               
+                                if (countingmechanism[currentslot] < countingmechanismcap[currentslot] - 1)
+                                {
+                                    countingmechanism[currentslot]++;
+                                }
+                                else
+                                {
+                                    while (countingmechanism[currentslot] == countingmechanismcap[currentslot]- 1 && currentslot != 0)
+                                    {
+                                        currentslot--;
+                                        
+                                    }
+                                    countingmechanism[currentslot]++;
+                                    for (int l = clauseTailsLength - 1; l > currentslot; l--)
+                                    {
+                                        countingmechanism[l] = 0;
+                                    }
+                                    currentslot = clauseTailsLength - 1;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            recursionList.AddRange(headRecursion(index.getMatchingTrees(clauseTails[i][0])));
+                        }
+                    }
+                }
+            }
+            return recursionList;
+        }
+
+        static private void storeClauseTail(string tail, int linenumber)
 		{
 			int level = 0;
 			string buffer = "";
@@ -73,7 +180,7 @@ namespace PrologEmbedding
         {
             bool endsInPeriod = true;
             char[] charsToTrim = {'.', ' '};
-            string[] lines = System.IO.File.ReadAllLines(@"testfile.txt");
+            string[] lines = System.IO.File.ReadAllLines(@"testfile3.txt");
             for (int i = 0; i < lines.Length; i++)
             {
                 endsInPeriod = lines[i].EndsWith(".");
