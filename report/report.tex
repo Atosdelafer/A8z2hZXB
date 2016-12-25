@@ -1,0 +1,74 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+%\usepackage{fullpage}
+\usepackage[margin=1.3in]{geometry}
+\usepackage{titlesec}
+\usepackage{tikz}
+\usepackage{tikzscale}
+\usepackage{float}
+\usetikzlibrary{arrows,automata}
+\usetikzlibrary{shapes}
+\usetikzlibrary{positioning,calc,shapes.geometric}
+\usepackage{upgreek}
+\usepackage{nameref}
+\usepackage{pslatex}
+\usepackage{breakcites}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.11}
+\usepackage{wrapfig}
+\usepackage[font=scriptsize]{caption}
+\usepackage[font=scriptsize]{subcaption}
+
+\newcommand\todo[1]{\noindent\textcolor{red}{\ttfamily -- #1}}
+
+\titleformat{\paragraph}
+{\normalfont\normalsize\itshape}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\title{Embedding Prolog in C\#}
+\author{Authors...\\
+\vspace{0.5em}\\
+MSc Computing Science\\
+Utrecht University
+}
+\date{\vspace{2em}\today}
+
+\begin{document}
+\maketitle
+
+\thispagestyle{empty}
+% Abstract
+
+\newpage
+\thispagestyle{empty}
+\include{abstract}
+
+\newpage
+\thispagestyle{empty}
+\tableofcontents
+
+\newpage
+\setcounter{page}{1}
+
+% Introduction
+\include{introduction}
+
+% Section model
+\include{model}
+
+% Conclusion
+\include{conclusion}
+
+\newpage
+% Bibliography
+\bibliographystyle{apalike}
+\bibliography{bibliography}
+
+\end{document}

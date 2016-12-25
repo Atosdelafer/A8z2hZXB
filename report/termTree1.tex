@@ -1,0 +1,22 @@
+
+\newcommand{\term}[3]{
+	\node[state] (#1) [#3] {#2};
+}
+
+\newcommand{\branch}[2]{
+	\draw (#1) -- (#2);
+}
+
+\begin{tikzpicture}[>=stealth',auto,node distance=5em,
+                    semithick, shorten >=0pt, every node/.style={transform shape}]
+  \tikzstyle{every state}=[align=center,  font=\small, rectangle, minimum height=1.5em]
+
+\term{T1}{foo}{};
+\term{T2}{bar}{below left of=T1};
+\term{T3}{boz}{below right of=T1};
+
+\branch{T1}{T2};
+\branch{T1}{T3};
+
+ 
+\end{tikzpicture}
