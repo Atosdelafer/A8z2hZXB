@@ -17,23 +17,36 @@ namespace PrologEmbedding
 			String[] filecontent = FileReader();
 			int linenumber = 0;
 			foreach (string line in filecontent) {
-				var ClauseCheck = ClauseValidator.isValidAndDecomposesClause (line);
-				if (ClauseValidator.isValidCompound (line)) {                        
-					//Console.WriteLine ("Compound");
-					index.addTermTree (new TermTree(line), linenumber);
 
-					linenumber++;
-				} else if (ClauseCheck.Item1) {                        
-					//Console.WriteLine ("Clause");
-					index.addTermTree (new TermTree(ClauseCheck.Item2), linenumber);
-					storeClauseTail (ClauseCheck.Item3, linenumber);
-					// new clause rail function: addToClauseTree(Newtree, ClauseCheck.Item3, linenumber, 0);
-					linenumber++;
+				if (!line.Contains (":-")) {
+
+					if (ClauseValidator.isValidCompound (line)) {
+						Console.WriteLine ("Compound");
+						TermTree test = new TermTree (line);
+
+						index.addTermTree (test, linenumber);
+						linenumber++;
+					}
+						
+				} else {                        
+					var ClauseCheck = ClauseValidator.isValidAndDecomposesClause (line);
+					if (ClauseCheck.Item1) {
+							
+						Console.WriteLine ("Clause");
+
+						index.addTermTree (new TermTree (ClauseCheck.Item2), linenumber);
+						storeClauseTail (ClauseCheck.Item3, linenumber);
+						// new clause rail function: addToClauseTree(Newtree, ClauseCheck.Item3, linenumber, 0);
+						linenumber++;
+					}
 				}
 			}
 
 			// Outputing index
 			Console.Write (index.toString ());
+
+
+
 			// Outputing clause tails
 			foreach (KeyValuePair<int, TermTree[]> treeArray in clauseTails) {
 				for (int i = 0; i < treeArray.Value.Length; i++) {
@@ -41,6 +54,7 @@ namespace PrologEmbedding
 				}
 			}
             inference();
+
         }
 
         static private void inference()
@@ -53,7 +67,7 @@ namespace PrologEmbedding
             while (true)
             {
                 inputline = Console.ReadLine();
-                matchresult = index.getMatchingTrees(new TermTree(inputline));
+				matchresult = index.getMatchingTrees(new TermTree(inputline));
 
                 inKnowledgeBase = headRecursion(matchresult);
                 foreach (bool item in inKnowledgeBase)
@@ -180,7 +194,7 @@ namespace PrologEmbedding
         {
             bool endsInPeriod = true;
             char[] charsToTrim = {'.', ' '};
-            string[] lines = System.IO.File.ReadAllLines(@"testfile3.txt");
+            string[] lines = System.IO.File.ReadAllLines(@"testfile4.txt");
             for (int i = 0; i < lines.Length; i++)
             {
                 endsInPeriod = lines[i].EndsWith(".");

@@ -2,7 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
     <Files>
-      <File FileName="Program.cs" Line="43" Column="83" />
+      <File FileName="Program.cs" Line="57" Column="4" />
+      <File FileName="TermTreeIndex.cs" Line="69" Column="1" />
+      <File FileName="ClauseValidator.cs" Line="82" Column="19" />
+      <File FileName="bin/Debug/testfile4.txt" Line="2" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
