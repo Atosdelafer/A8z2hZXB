@@ -8,3 +8,6 @@ verbose:slides.md
 slides.pdf:slides.md
 	pandoc -t beamer slides.md -o slides.pdf --latex-engine=xelatex --template beamer-template.tex
 
+
+winand:winand.md
+	pandoc -t beamer winand.md -o winand.pdf --latex-engine=xelatex --template beamer-template.tex

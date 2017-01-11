@@ -89,6 +89,8 @@ You can refer to images using the usual markdown syntax:
 
 ![My caption](img/uueduc.jpg "Alt caption"){ width=30% }
 
+![My caption](img/henk.pdf "Alt caption"){ width=100% }
+
 ---
 # Staged builds
 
