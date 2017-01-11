@@ -1,4 +1,4 @@
-#recursion: e.g. on these lists or on terms
+#recursion
 We have multiple ways to use recursion: in the database and in our queries
 for example we can make properties transitive.
 ```
