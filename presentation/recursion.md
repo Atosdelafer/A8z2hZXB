@@ -37,3 +37,23 @@ So when we search for members we can simply search
 `?- member(anvar,[roald, winand, anvar, alexey, sjoerd])`
 
 which would say yes
+
+#problems with recursion
+in prolog we do have to be careful when using recursion, for example with:
+
+```
+something :- something.
+```
+
+---
+
+we also want to use tail recursion in favour of head recursion;
+```
+lengthH([],0).
+lengthH([H|T],N):- lengthH(T,X), N is X+1.
+lengthT([H|T],A,L) :- Anew is A+1, lengthT(T,Anew,L).
+lengthT([],L,L).
+lengthTail(List,L) :- lengthT(List,0,L). %to make it nicer
+```
+
+
