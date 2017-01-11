@@ -11,3 +11,7 @@ slides.pdf:slides.md
 
 winand:winand.md
 	pandoc -t beamer winand.md -o winand.pdf --latex-engine=xelatex --template beamer-template.tex
+
+sjoerd:SlidesSjoerd.md
+	pandoc -t beamer SlidesSjoerd.md -o sjoerd.pdf --latex-engine=xelatex --template beamer-template.tex
+
