@@ -136,6 +136,7 @@ Two terms (term1 and term2) unify:
 # Some examples first
 
 Terms that unify
+
 * (1) *burger_1* and *burger_1*
 
 * (2) *X* and vincent (*X* is inst-ed to *vincent*)
@@ -157,14 +158,12 @@ If term1 and term2 are complex terms, they unify iff:
 # Example:
 
 Knowledge base (KB):
-
 vertical(line(point(X,Y),point(X,Z)))
-
 Query:
-
 vertical(line(point(1,1),point(2,3))). 
 
 Processing logic:
+
 * 1. Try unification of the complex term vertical(1 argument) in the query to that in the KB.
 
 * 2. Try unification of the functor (complex term) *line* in query and KB.
