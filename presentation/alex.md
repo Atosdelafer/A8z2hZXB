@@ -28,68 +28,49 @@ sansfont: Ubuntu Light
 * complex terms
 
 
----
-
-
 # Atom
 
 
 Either:
 
 
-* string of charachrers..
+* string of charachrers (upper-case, lower-case, digits, _), begins with lower-case ch.
+E.g.: big_kahuna_burger, listens2Music.
 
+* arbitraty string of characters enclosed in ' ' (single).
+E.g: ’The Beatles’, ’ &^%&#@$  &* ’.
 
-* arbitraty string of ch. in " "
-
-
-* string of special characters
-
-
----
+* string of special characters (e.g. ; or :-)
+E.g: in rule syntax term1 :- term2;
 
 
 # Numbers
 
 
-* Floats
+* Floats (e.g. 1657.3087 or π)
 
-
-* Integers
-
+* Integers (23 , 1001 , 0 , -365)
 
 * Straigtforward syntax
-
-
----
 
 
 # Variable
 
 
 * starts with upper-case letter or _
-
+(E.g: X, Y_50, List1, _input)
 
 * anonimous variable _ 
-
-
----
 
 
 # Complex term
 
 
-* building block: functor
-
+* building block: functor (which is an atom) with arguments (terms)
+E.g: `playsAirGuitar(jody), loves(vincent,mia).`
 
 * nested functors make up complex terms 
-
-
----
-
-# Examples
-
-
+E.g: `and(big(burger),kahuna(burger)).`, `vertical(line(point(X,Y),point(X,Z))).` 
 
 ---
 
@@ -99,35 +80,23 @@ Either:
 * term1 :- term2
 * term1 is true if term2 is true.
 
-___
 
-# some Examples again
-...
-___
-
+# some examples again
+```
+father(Y,Z):-  man(Y),  son(Z,Y).
+wizard(X):-  hasBroom(X),  hasWand(X). 
+```
 
 # Unification (how it works)
-
-
-
 
 
 Two terms unify if they are the same term or if they contain variables that can be uniformly instantiated with terms in such a way that the resulting terms are equal.
 
 
-___
-
-
 # what this means??
 
 
-
-
-
 ...examples
-
-
-___
 
 
 # more on unification..
@@ -139,8 +108,6 @@ ___
 * if they unify, we are interested to know how the variables have to be instantiated to make the terms unify.
 
 
-___
-
 
 # more precise rules:
 
@@ -148,48 +115,40 @@ ___
 Two terms (term1 and term2) unify:
 
 
-* If they are both constants, they unify iff they are the same atom (or number)
+* (1) If they are both constants, they unify iff they are the same atom (or number)
 
 
-* If term1 is a variable and term2 is any term, then they unify and term1 is instantiated to term2.
+* (2) If term1 is a variable and term2 is any term, then they unify and term1 is instantiated to term2.
 
 
-* If both terms are variables, they’re both instantiated to each other.
+* (3) If both terms are variables, they’re both instantiated to each other.
 
 
-* If both are complex terms and ... (next silde)
+* (4) If both are complex terms and ... (next silde)
 
 
-* Iff it follows from the rules above that they unify.
-
-
----
+* (5) Iff it follows from the rules above that they unify.
 
 
 # Some examples first
 
+Terms that unify
+(1) *burger_1* and *burger_1*
+(2) *X* and vincent (*X* is inst-ed to *vincent*)
+(3) *X* and *Y*
 
 
----
-
-
-# Some examples first...
-
----
-
-
-# ...
-
+# For complex terms:
 
 If term1 and term2 are complex terms, they unify iff:
 
 
 * they have the same functor and arity (nr. of args)
 
-
-* all their corr. args unify
-
+* all their corresponding arguments unify
 
 * the variable instantiations are compatible
 
-___
+# Compex term example:
+
+# Extented example with queries 
