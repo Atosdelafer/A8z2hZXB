@@ -20,7 +20,9 @@ ancestorof(X,Y):- momof(X,Z),ancestor(Z,Y).
 #recursion on lists
 suppose we have a list of groupmembers
 `[roald, winand, anvar, alexey, sjoerd]`
+
 . . .
+
 we can declare a member of this group to be part of this list using recursion i.e.
 ```
 
@@ -29,6 +31,7 @@ member(H, [H|T])
 member(X, [H|T]) :- member(X,T) 
 ```
 . . .
+
 So when we search for members we can simply search
 
 `?- member(anvar,[roald, winand, anvar, alexey, sjoerd])`
