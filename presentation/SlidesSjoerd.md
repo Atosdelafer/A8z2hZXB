@@ -19,6 +19,7 @@ sansfont: Ubuntu Light
 
 * When a search path is not valid, **backtracking** occurs:
 
+
   	Traversing the tree in opposite direction until a variable binding (choise point) is reached
 
 * If a result is found, one can choose to continue the search by using backtracking, using the **;** command
@@ -27,7 +28,7 @@ sansfont: Ubuntu Light
 
 Knowledge database:
 
-![Knowledge database](img/kdb1.png "kdb1"){ width=60% }
+![Knowledge database](img/kdb1.png "kdb1"){ width=50% }
 
 # A simple example (2)
 
@@ -37,7 +38,7 @@ Knowledge database:
 
 Knowledge database:
 
-![Knowledge database](img/kdb2.png "kdb2"){ width=60% }
+![Knowledge database](img/kdb2.png "kdb2"){ width=50% }
 
 # A more complicated example (2)
 
