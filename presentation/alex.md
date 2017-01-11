@@ -77,7 +77,9 @@ E.g: `and(big(burger),kahuna(burger)).`, `vertical(line(point(X,Y),point(X,Z))).
 # Clauses
 
 * Rules (clauses) state information that is conditionally true of the situation of interest.
+
 * term1 :- term2
+
 * term1 is true if term2 is true.
 
 
@@ -110,7 +112,6 @@ Some examples:
 * if they unify, we are interested to know how the variables have to be instantiated to make the terms unify.
 
 
-
 # more precise rules:
 
 
@@ -136,7 +137,9 @@ Two terms (term1 and term2) unify:
 
 Terms that unify
 * (1) *burger_1* and *burger_1*
+
 * (2) *X* and vincent (*X* is inst-ed to *vincent*)
+
 * (3) *X* and *Y*
 
 
@@ -154,14 +157,22 @@ If term1 and term2 are complex terms, they unify iff:
 # Example:
 
 Knowledge base (KB):
+
 vertical(line(point(X,Y),point(X,Z)))
+
 Query:
+
 vertical(line(point(1,1),point(2,3))). 
 
 Processing logic:
 * 1. Try unification of the complex term vertical(1 argument) in the query to that in the KB.
+
 * 2. Try unification of the functor (complex term) *line* in query and KB.
+
 * 3. Try unification of the arguments of the functor *line*.
+
 * 4. ... Unify point(1, 1) with point(X, Y), instantiate X to 1 and Y to 1.
+
 * 5. Unify point(1, 3) with point(X, Z). Conflict: X has been inst.-ed to 1 and cannot unify with 2 now.
+
 * 6. Hence, two complex terms do not unify.
