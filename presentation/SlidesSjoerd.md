@@ -15,8 +15,6 @@ sansfont: Ubuntu Light
 * Variables are replaced by internal variables (e.g. _G2145)
 * A search is done in a depth first fashion in a tree-shaped structure
 
-
----
 # Backtracking
 
 * When a search path is not valid, **backtracking** occurs:
@@ -25,47 +23,40 @@ sansfont: Ubuntu Light
 
 * If a result is found, one can choose to continue the search by using backtracking, using the **;** command
 
----
 # A simple example (1)
 
 Knowledge database:
 
 ![Knowledge database](img/kdb1.png "kdb1"){ width=60% }
 
----
 # A simple example (2)
 
 | - | - |
 |---|---|
 | ![code](img/Ex1.png "code1"){ width=45% } | ![search tree](img/ex1tree.png "tree1"){ width=45% } |
 
----
 # A more complicated example (1)
 
 Knowledge database:
 
 ![Knowledge database](img/kdb2.png "kdb2"){ width=60% }
 
----
 # A more complicated example (2)
 
 | - | - |
 |---|---|
 | ![code](img/Ex2.png "code2"){ width=45% } | ![search tree](img/ex2tree.png "tree2"){ width=45% } |
 
----
 # A more complicated example (2)
 
 code             |  Search Tree
 :-------------------------:|:-------------------------:
 ![](img/Ex2.png)  |  ![](img/ex2tree.png)
 
----
 # A more complicated example (2)
 
 ![code](img/Ex1.png "code1"){ width=45% } ![search tree](img/ex1tree.png "tree1"){ width=45% }
 
----
 
 # A more complicated example (3)
 * Results are not always as expected
@@ -78,7 +69,6 @@ code             |  Search Tree
 
 ![jealous(X,X)](img/jealousXX.png "XX"){ width=35% }
 
----
 # Powerful basis for logical inference
 
 * Combining unification and backtracking to search trees results in a fast tool for logical inference
@@ -88,9 +78,6 @@ code             |  Search Tree
 ```
 ?- father(X) = X
 ```
-
----
-
 
 <!-- Local Variables:  -->
 <!-- pandoc/write: beamer -->
