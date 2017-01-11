@@ -157,9 +157,9 @@ Query:
 vertical(line(point(1,1),point(2,3))). 
 
 Processing logic:
-1. Try unification of the complex term vertical(1 argument) in the query to that in the KB.
-2. Try unification of the functor (complex term) *line* in query and KB.
-3. Try unification of the arguments of the functor *line*.
-4. ... Unify point(1, 1) with point(X, Y), instantiate X to 1 and Y to 1.
-5. Unify point(1, 3) with point(X, Z). Conflict: X has been inst.-ed to 1 and cannot unify with 2 now.
-6. Hence, two complex terms do not unify.
+* 1. Try unification of the complex term vertical(1 argument) in the query to that in the KB.
+* 2. Try unification of the functor (complex term) *line* in query and KB.
+* 3. Try unification of the arguments of the functor *line*.
+* 4. ... Unify point(1, 1) with point(X, Y), instantiate X to 1 and Y to 1.
+* 5. Unify point(1, 3) with point(X, Z). Conflict: X has been inst.-ed to 1 and cannot unify with 2 now.
+* 6. Hence, two complex terms do not unify.
