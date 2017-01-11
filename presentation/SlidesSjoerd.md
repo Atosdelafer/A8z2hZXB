@@ -21,9 +21,9 @@ sansfont: Ubuntu Light
 
 * When a search path is not valid, **backtracking** occurs:
 
-  	Traversing the tree in opposite direction until a variable binding (choise point) is reached
+  Traversing the tree in opposite direction until a variable binding (choise point) is reached
 
-* If a result is found, one can choose to continue the search by using backtracking, using the "**;**" command
+* If a result is found, one can choose to continue the search by using backtracking, using the **;** command
 
 ---
 # A simple example (1)
@@ -54,6 +54,19 @@ Knowledge database:
 | ![code](img/Ex2.png "code2"){ width=45% } | ![search tree](img/ex2tree.png "tree2"){ width=45% } |
 
 ---
+# A more complicated example (2)
+
+code             |  Search Tree
+:-------------------------:|:-------------------------:
+![](img/Ex2.png)  |  ![](img/ex2tree.png)
+
+---
+# A more complicated example (2)
+
+![code](img/Ex1.png "code1"){ width=45% } ![search tree](img/ex1tree.png "tree1"){ width=45% }
+
+---
+
 # A more complicated example (3)
 * Results are not always as expected
 
