@@ -59,7 +59,7 @@ Knowledge database:
 
 * Combining unification and backtracking into search trees results in a fast tool for logical inference
 * Understanding of underlying concepts is important to understand results produced
-* Various implementations might grant diffrent results, when cosidering a query like:
+* Various implementations might grant diffrent results, when considering a query like:
 
 ```
 ?- father(X) = X
