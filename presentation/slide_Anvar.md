@@ -5,7 +5,6 @@ subtitle: Prolog
 theme: uucs
 mainfont: Ubuntu Light
 sansfont: Ubuntu Light
----
 
 
 # What is logic programming?
@@ -45,3 +44,8 @@ Prolog is still being used nowadays in various industrial, medical & commercial 
 * Prolog databases are "consulted" (loaded), and then the query tool is used to "make queries" (ask questions) about the database.
 * How queries are answered is generally beyond the control of the programmer; Prolog uses a depth-first search to figure out how to answer queries.
 * "Programs" written in Prolog are "executed" by performing queries.
+---
+
+
+
+
