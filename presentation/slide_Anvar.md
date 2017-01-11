@@ -10,14 +10,12 @@ sansfont: Ubuntu Light
 # What is logic programming?
 
 Logic programming is a type of programming paradigm which is largely based on formal logic.Any program written in a logic programming language is a set of sentences in logical form, expressing facts and rules about some problem domain. In logic programing, rules are written in the form of clauses:
-				
-				H :- B1, …, Bn.
-
+H :- B1, …, Bn.
 and are read declaratively as logical implications:
-				
-				H if B1 and … and Bn.
+H if B1 and … and Bn.
 
 H - head of the rule; B1, …, Bn - the body; H. - facts
+
 
 # What is Prolog?
 
@@ -40,8 +38,7 @@ Prolog is still being used nowadays in various industrial, medical & commercial 
 * online support service for customers, etc.
 
 # Knowledge database
-
-*Prolog programs have two parts: a database (of facts and rules), and an interactive "query" tool
-*Prolog databases are "consulted" (loaded), and then the query tool is used to "make queries" (ask questions) about the database
-*How queries are answered is generally beyond the control of the programmer; Prolog uses a depth-first search to figure out how to answer queries
-*"Programs" written in Prolog are "executed" by performing queries
+* Prolog programs have two parts: a database (of facts and rules), and an interactive "query" tool.
+* Prolog databases are "consulted" (loaded), and then the query tool is used to "make queries" (ask questions) about the database.
+* How queries are answered is generally beyond the control of the programmer; Prolog uses a depth-first search to figure out how to answer queries.
+* "Programs" written in Prolog are "executed" by performing queries.
