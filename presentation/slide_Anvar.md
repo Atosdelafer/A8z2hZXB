@@ -7,11 +7,14 @@ mainfont: Ubuntu Light
 sansfont: Ubuntu Light
 ---
 
-# What is logic programming?
 
+# What is logic programming?
 Logic programming is a type of programming paradigm which is largely based on formal logic.Any program written in a logic programming language is a set of sentences in logical form, expressing facts and rules about some problem domain. In logic programing, rules are written in the form of clauses:
+
 H :- B1, …, Bn.
+
 and are read declaratively as logical implications:
+
 H if B1 and … and Bn.
 
 H - head of the rule; B1, …, Bn - the body; H. - facts
