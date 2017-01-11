@@ -42,7 +42,7 @@ Knowledge database:
 
 # A more complicated example (2)
 
-![code](img/Ex1.png "code1"){ width=45% } ![search tree](img/ex1tree.png "tree1"){ width=45% }
+![code](img/Ex2.png "code1"){ width=45% } ![search tree](img/ex2tree.png "tree1"){ width=45% }
 
 # A more complicated example (3)
 * Results are not always as expected
@@ -57,7 +57,7 @@ Knowledge database:
 
 # Powerful basis for logical inference
 
-* Combining unification and backtracking to search trees results in a fast tool for logical inference
+* Combining unification and backtracking into search trees results in a fast tool for logical inference
 * Understanding of underlying concepts is important to understand results produced
 * Various implementations might grant diffrent results, when cosidering a query like:
 
