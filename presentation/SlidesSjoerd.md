@@ -1,17 +1,22 @@
 ---
 # Proof Search
 
+* The manner in which a query is handled
 * Knowledge Database is read from top to bottom
-* Variables are replaced by shared variables
-* A search is done in a depth first fashion
+* Tries to unify with facts and heads of rules
+* At first valid encounter, unification is carried out
+* Variables are replaced by internal variables (e.g. _G2145)
+* A search is done in a depth first fashion in a tree-shaped structure
 
 
 ---
 # Backtracking
 
 * When a search path is not valid, **backtracking** occurs:
-* Traversing the tree in opposite direction until a variable binding is reached
-* If a result is found, one can choose to continue the search by backtracking, using the "**;**" command
+
+  	Traversing the tree in opposite direction until a variable binding (choise point) is reached
+
+* If a result is found, one can choose to continue the search by using backtracking, using the "**;**" command
 
 ---
 # A simple example (1)
@@ -43,9 +48,10 @@ Knowledge database:
 
 ---
 # A more complicated example (3)
-* Results not always as expected.
+* Results not always as expected
+
 * jealous(X,Y):
-* 
+ 
 ![jealous(X,Y)](img/jealousXY.png "Alt caption"){ width=45% }
 
 * jealous(X,X)
@@ -54,7 +60,13 @@ Knowledge database:
 ---
 # Powerful basis for logical inference
 
-text
+* Combining unification and backtracking to search trees results in a fast tool for logical inference
+* Understanding of underlying concepts is important to understand results produced
+* Various implementations might grant diffrent results, when cosidering a query like:
+
+```
+?- father(X) = X
+```
 
 ---
 
