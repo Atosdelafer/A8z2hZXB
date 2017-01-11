@@ -38,16 +38,16 @@ So when we search for members we can simply search
 
 which would say yes
 
-#problems with recursion
+#recursion
 in prolog we do have to be careful when using recursion, for example with:
 
 ```
 something :- something.
 ```
 
----
+...
 
-we also want to use tail recursion in favour of head recursion;
+we also want to use tail recursion in favour of head recursion:
 ```
 lengthH([],0).
 lengthH([H|T],N):- lengthH(T,X), N is X+1.
