@@ -95,8 +95,10 @@ Two terms unify if they are the same term or if they contain variables that can 
 
 # what this means??
 
-
-...examples
+Some examples:
+* x = 1.
+* list(X, X) = list(1, 2)
+* X = father(X)
 
 
 # more on unification..
