@@ -1,0 +1,2 @@
+jan(kees).
+henk(X):-piet(X).

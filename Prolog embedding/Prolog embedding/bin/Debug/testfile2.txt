@@ -9,5 +9,3 @@ sleepy:-notatall.
 drunk:-beer.
 me:-party.
 me:-drunk,sleepy.
-
-

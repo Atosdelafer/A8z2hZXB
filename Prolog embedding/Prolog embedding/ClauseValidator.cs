@@ -34,7 +34,7 @@ namespace PrologEmbedding
 
 		public static bool isValidCompound(string term)
 		{
-
+			Console.WriteLine (term);
 			bool nocomma = true;
 			int outerleftbrace = 0;
 			int numberofbraces = 0;
