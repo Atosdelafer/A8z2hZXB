@@ -35,9 +35,9 @@ Knowledge database:
 ---
 # A simple example (2)
 
-
-| ![code](img/Ex1.png "code1"){ width=40% } | ![search tree](img/ex1tree.png "tree1"){ width=40% } |
-|-|-|
+| - | - |
+|---|---|
+| ![code](img/Ex1.png "code1"){ width=45% } | ![search tree](img/ex1tree.png "tree1"){ width=45% } |
 
 ---
 # A more complicated example (1)
@@ -49,8 +49,9 @@ Knowledge database:
 ---
 # A more complicated example (2)
 
-| ![code](img/Ex2.png "code2"){ width=40% } | ![search tree](img/ex2tree.png "tree2"){ width=40% } |
-|-|-|
+| - | - |
+|---|---|
+| ![code](img/Ex2.png "code2"){ width=45% } | ![search tree](img/ex2tree.png "tree2"){ width=45% } |
 
 ---
 # A more complicated example (3)
