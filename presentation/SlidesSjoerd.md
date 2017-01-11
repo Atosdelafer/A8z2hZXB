@@ -1,4 +1,11 @@
 ---
+author: Winand, Roald, Sjoerd, Alexey and Anvar
+title: Concepts of programming languages
+subtitle: Prolog
+theme: uucs
+mainfont: Ubuntu Light
+sansfont: Ubuntu Light
+---
 # Proof Search
 
 * The manner in which a query is handled
@@ -23,28 +30,25 @@
 
 Knowledge database:
 
-![Knowledge database](img/kdb1.png "Alt caption"){ width=80% }
+![Knowledge database](img/kdb1.png "kdb1"){ width=80% }
 
 ---
 # A simple example (2)
 
-![code](img/Ex1.png "Alt caption"){ width=45% }
 
-![search tree](img/ex1tree.png "Alt caption"){ width=45% }
+| ![code](img/Ex1.png "code1"){ width=45% } | ![search tree](img/ex1tree.png "tree1"){ width=45% } |
 
 ---
 # A more complicated example (1)
 
 Knowledge database:
 
-![Knowledge database](img/kdb2.png "Alt caption"){ width=80% }
+![Knowledge database](img/kdb2.png "kdb2"){ width=80% }
 
 ---
 # A more complicated example (2)
 
-![code](img/Ex2.png "Alt caption"){ width=45% }
-
-![search tree](img/ex2tree.png "Alt caption"){ width=45% }
+| ![code](img/Ex2.png "code2"){ width=45% } | ![search tree](img/ex2tree.png "tree2"){ width=45% } |
 
 ---
 # A more complicated example (3)
@@ -52,11 +56,11 @@ Knowledge database:
 
 * jealous(X,Y):
  
-![jealous(X,Y)](img/jealousXY.png "Alt caption"){ width=45% }
+![jealous(X,Y)](img/jealousXY.png "XY"){ width=45% }
 
 * jealous(X,X)
 
-![jealous(X,X)](img/jealousXX.png "Alt caption"){ width=45% }
+![jealous(X,X)](img/jealousXX.png "XX"){ width=45% }
 ---
 # Powerful basis for logical inference
 
@@ -69,8 +73,6 @@ Knowledge database:
 ```
 
 ---
-
-!
 
 
 <!-- Local Variables:  -->
