@@ -1,5 +1,5 @@
 #recursion
-We have multiple ways to use recursion: in the database and in our queries
+We have multiple ways to use recursion: in the database
 for example we can make properties transitive.
 ```
 dadof(you,dad).
