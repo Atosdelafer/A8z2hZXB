@@ -32,9 +32,29 @@ namespace PrologEmbedding
 			return compoundterm;
 		}
 
-		public static bool isValidCompound(string term)
+		public static bool isValidCompound(string term) {
+
+			int leftBrace = term.IndexOf ("(");
+			int rightBrace = term.LastIndexOf (")");
+
+			if (leftBrace == -1 || rightBrace == 1)
+				return false;
+
+			if (!isValidTerm (term.Substring (0, leftBrace)))
+				return false;
+
+			foreach (string subTerm in 
+			         term.Substring(leftBrace + 1, rightBrace - (leftBrace + 1)).Split(',')) {
+
+				if (! (isValidTerm(subTerm.Trim()) || isValidCompound
+				       (subTerm.Trim()))) return false;
+			}
+
+			return true;
+		}
+
+		public static bool isValidCompoundAlt(string term)
 		{
-			Console.WriteLine (term);
 			bool nocomma = true;
 			int outerleftbrace = 0;
 			int numberofbraces = 0;
@@ -162,6 +182,22 @@ namespace PrologEmbedding
 				//Console.WriteLine(key);
 			}
 			return false;
+		}
+
+		/**
+		 * Left side is a variable or term, contains 'is' in the middle, 
+		 * and right side are only numbers or variables.
+		 **/
+		public static bool isValidMath(string term) {
+			int positionOfIs = term.IndexOf ("is");
+
+			if (positionOfIs == -1) return false;
+
+			Console.WriteLine (term.Substring (0, positionOfIs));
+
+			Console.WriteLine (ClauseValidator.isValidVariable (term.Substring (0, positionOfIs)));
+
+			return true;
 		}
 	}
 }

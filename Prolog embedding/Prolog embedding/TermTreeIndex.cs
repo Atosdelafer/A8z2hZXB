@@ -167,6 +167,68 @@ namespace PrologEmbedding
 			}
 		}
 
+		public Tuple<TermTree, Dictionary<int, Dictionary<String, String>>> getMatchingTrees2(TermTree tree) {
+			Dictionary<int, Dictionary<String, String>> result = new Dictionary<int, Dictionary<String, String>> ();
+
+			foreach (int i in this.indices)	result [i] = new Dictionary<String, String> ();
+			int[] indices = getMatchingTrees2 (this, tree, 0, result);
+
+			Dictionary<int, int> indicesDict = new Dictionary<int, int> ();
+			foreach (int i in indices) indicesDict [i] = i;
+
+			List<int> removeIds = new List<int> ();
+
+			foreach (int index in result.Keys) {
+				if (!indicesDict.ContainsKey (index))
+					removeIds.Add (index);
+			}
+
+			foreach(int index in removeIds) result.Remove (index);
+
+
+			return new Tuple<TermTree, Dictionary<int, Dictionary<string, string>>>(tree, result);
+		}
+
+		static private int[] getMatchingTrees2(TermTreeIndex termTreeIndex, TermTree tree, int parameter, 
+		                                       Dictionary<int, Dictionary<String, String>> indicesAndVariables) {
+
+			int[] indices = termTreeIndex.indices.ToArray ();
+
+			if (Regex.Match (tree.term, "^[A-Z_]").Success) {
+
+				// Storing variable bindings
+				foreach (TermTreeIndex branch in termTreeIndex.branches [parameter].Values) {
+					foreach (int index in branch.indices) {
+
+						if (indicesAndVariables [index].ContainsKey (tree.term)) {
+							if (indicesAndVariables [index] [tree.term] != branch.term) {
+								List<int> indicesList = termTreeIndex.indices;
+								indicesList.Remove (index);
+								indices = indicesList.ToArray ();
+							}
+						} else {
+							indicesAndVariables [index] [tree.term] = branch.term;
+						}
+					}
+				}
+
+				return indices;
+			} else if ((termTreeIndex.branches [parameter].ContainsKey (tree.key))) {
+				for (int b = 0; b < tree.arity; b++) {
+					indices = indices.Intersect (
+						getMatchingTrees2 (termTreeIndex.branches [parameter] [tree.key], tree.branches [b], b, indicesAndVariables)
+						).ToArray ();
+				}
+
+				if (tree.arity == 0) 
+					return termTreeIndex.branches[parameter][tree.key].indices.ToArray();
+
+				return indices;
+			} else {
+				return new int[0];
+			}
+		}
+
 		public string toString() {
 			return toString (this);
 		}

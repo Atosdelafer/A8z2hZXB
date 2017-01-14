@@ -1,16 +1,10 @@
-﻿<Properties StartupItem="Linux.csproj">
+﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ClauseValidator.cs">
     <Files>
-<<<<<<< HEAD
-      <File FileName="Program.cs" Line="61" Column="45" />
-      <File FileName="TermTreeIndex.cs" Line="69" Column="1" />
-=======
-      <File FileName="Program.cs" Line="57" Column="4" />
-      <File FileName="TermTreeIndex.cs" Line="69" Column="1" />
-      <File FileName="ClauseValidator.cs" Line="82" Column="19" />
-      <File FileName="bin/Debug/testfile4.txt" Line="2" Column="18" />
->>>>>>> cf281cc6dae6258e90b4cde038cdaf1162e67502
+      <File FileName="Program.cs" Line="56" Column="108" />
+      <File FileName="TermTreeIndex.cs" Line="229" Column="3" />
+      <File FileName="ClauseValidator.cs" Line="37" Column="29" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

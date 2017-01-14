@@ -1,2 +1,3 @@
-jan(kees).
-henk(X):-piet(X).
+human(jan,a,a).
+human(kees,b,a).
+human(maria,b,b).

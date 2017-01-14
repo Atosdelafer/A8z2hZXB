@@ -10,18 +10,22 @@ namespace PrologEmbedding
 		static TermTreeIndex index = new TermTreeIndex ();
 		// Dictionary containing all clause tails, heads are in index
 		static Dictionary<int, TermTree[]> clauseTails = new Dictionary<int, TermTree[]> ();
+		static String[] knowledgeBase;
 
         static void Main(string[] args)
         {
+			//Console.WriteLine (ClauseValidator.isValidMath ("X is B"));
+
+			//return;
 			//storeClauseTail ("foo(bar),doz(coo)", 0);
-			String[] filecontent = FileReader();
+
+			knowledgeBase = FileReader();
 			int linenumber = 0;
-			foreach (string line in filecontent) {
+			foreach (string line in knowledgeBase) {
 
 				if (!line.Contains (":-")) {
 
 					if (ClauseValidator.isValidCompound (line)) {
-						Console.WriteLine ("Compound");
 						TermTree test = new TermTree (line);
 
 						index.addTermTree (test, linenumber);
@@ -31,8 +35,6 @@ namespace PrologEmbedding
 				} else {                        
 					var ClauseCheck = ClauseValidator.isValidAndDecomposesClause (line);
 					if (ClauseCheck.Item1) {
-							
-						Console.WriteLine ("Clause");
 
 						index.addTermTree (new TermTree (ClauseCheck.Item2), linenumber);
 						storeClauseTail (ClauseCheck.Item3, linenumber);
@@ -45,7 +47,29 @@ namespace PrologEmbedding
 			// Outputing index
 			Console.Write (index.toString ());
 
+			foreach (int i in index.getMatchingTrees(new TermTree("human(X,b)"))) {
+				Console.WriteLine("--" + i);
+			}
 
+			Tuple<TermTree, Dictionary<int, Dictionary<String, String>>> result = index.getMatchingTrees2 (new TermTree ("human(X,Y,Z)"));
+
+			foreach (int k in result.Item2.Keys) {
+				Console.Write(k + " - ");
+				foreach (String k2 in result.Item2[k].Keys) {
+					Console.Write(k2 + ": " + result.Item2[k][k2] + ", ");
+				}
+				Console.WriteLine (" ");
+			}
+
+			/**Tuple<int[], Dictionary<String, String>> result = index.
+			for (int i = 0; i < result.Item1.Length; i++) {
+				Console.WriteLine (result.Item1[i]);
+				//Console.WriteLine (result.Item2[i]);
+			}
+**/
+			return;
+			// Outputing index
+			Console.Write (index.toString ());
 
 			// Outputing clause tails
 			foreach (KeyValuePair<int, TermTree[]> treeArray in clauseTails) {
