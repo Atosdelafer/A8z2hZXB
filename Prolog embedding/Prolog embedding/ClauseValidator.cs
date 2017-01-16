@@ -120,7 +120,7 @@ namespace PrologEmbedding
 			return true;            
 		}
 
-		static bool isValidTerm(string term)
+		public static bool isValidTerm(string term)
 		{
 			Match match = Regex.Match(term, "^(?![A-Z_ ])[A-Za-z0-9_]*$");
 
