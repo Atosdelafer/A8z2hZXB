@@ -44,6 +44,7 @@ namespace PrologEmbedding
 				}
 			}
 
+
 			// Outputing index
 			Console.Write (index.toString ());
 
