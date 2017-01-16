@@ -1,0 +1,177 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}	
+\usepackage[T1]{fontenc}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{Project Proposal Prolog\\
+\vspace{1em}
+\large Concepts of Programming Languages
+}
+\author{Winand, Roald, Sjoerd, Alexey and Anvar} %Renkema (4012062)}
+
+\begin{document}
+\maketitle
+
+\section{Background}
+% Background – what language will you be using? Provide some background about what sets this language apart from other programming languages.
+
+The subject for our project will be Prolog, a general-purpose logic programming language.
+It is considered as one of the first and most popular logic programming language available.
+Originally Prolog was intended as a way to process natural language, but it has also been used for theorem proving and expert systems.
+
+The language is suited for situations in which rule-based logical queries are used, for example databases or voice processing systems.
+It originated from first-order logic and is, unlike most programming languages, declarative.
+This means that the flow is expressed in terms of relation represented as fact and rules.
+By running a query over these relations, a computation can be done.
+
+% Not sure how much it must be elaborated on, as I can tell a lot of stuff about Prolog. - Winand
+
+\section{Problem}
+%Problem – what experiment do you wish to perform? Typically, you should think of studying how concepts or ideas from one language can be transported to your language of choice: 
+% how can we embed a domain specific languages for X in language Y?
+% Or how does language Z handle support metaprogramming/concurrency/…?
+\begin{quote}
+How can we implement Prolog in C\#?
+\end{quote}
+
+\section{Methodology}
+% Methodology – provide a detailed description of what it is that you would like to write. What are your expected outcomes? What contingency plans can you make if things do not work out?
+
+The goal of our project will be embedding Prolog in C\#.
+As this is quite a complex and iterative task, we are going to do this by implementing each particular aspect of Prolog step by step.
+
+\subsection{Term representation}
+Prolog distinguishes four types of terms: atoms, numbers, variables and compounds.
+As these terms all require a specific representation in C\#, a solution will be constructed to do this in an efficient way.
+Lists are considered a special compound term, hence are composed of the terms in the list.
+For example the list [1, 2, 3] is actually represented as the compound term .(1, .(2, .(3, []))).
+This means that a special representation is required for lists, as they are not constant in 
+length.
+Strings are actually lists of characters and thus also represented this way.
+At the completion of this part the following terms, for example, can be represented in an efficient way:
+\begin{quote}\begin{verbatim}
+true
+false
+foo
+foo(bar)
+[1, 2, 3]
+[a, b, c]
+"abc"
+foo(X)
+foo(_)
+\end{verbatim}\end{quote}
+
+\subsection{Clauses}
+When term representation is complete, the processing of clauses, which are facts and rules stored in some file, will be implemented.
+Processing means that defined clauses are stored in memory using the correct representation.
+It will therefore be possible to process a file containing facts and rules.
+As rules can consist of multiple clauses, processing of composed rules will also be possible.
+It should be noted that the implication form of the horn clause will be used, as this is the default in Prolog.
+When this part is completed the following example file can be processed:
+\begin{quote}\begin{verbatim}
+foo.
+foo(bar).
+bar :- foo.
+bar :- true.
+bar :- foo, foo(bar).
+\end{verbatim}\end{quote}
+
+\subsection{Unification}
+Variables should be bound to a specific value when it is appropriate, hence unified.
+Up to this point variables are only considered a type of term, thus not treated as actual variables.
+On occasions where variables are assigned, they will be bound to the values in the local context.
+This means that after this part the following rules can be processed:
+\begin{quote}\begin{verbatim}
+bar(X) :- X==1.
+foo(X) :- bar(X).
+\end{verbatim}\end{quote}
+
+\subsection{Backtracking}
+As the minimal requirements for a simple Prolog program are present, the execution of such a program will be made possible by implementing backtracking.
+Because backtracking has quite some complexity in time and space, the completion of this part will be considered a milestone.
+A number of unit tests will be performed on the execution of different Prolog programs to guarantee that backtracking behaves as expected.
+After this part it should be possible to process a program like:
+\begin{quote}\begin{verbatim}
+B.
+D.
+A :- B.
+A :- C.
+A :- D.
+\end{verbatim}\end{quote}
+
+\subsection{Mathematics}
+While the program is being tested for its soundness, mathematical operations will be implemented.
+As this is considered a non-critical functionality, it will only be done when everything is on track.
+After implementing this part, the following rules can be processed:
+
+\begin{quote}\begin{verbatim}
+bar(X) :- X is 1.
+foo(X) :- bar(Y), X is Y + 1.
+\end{verbatim}\end{quote}
+
+\subsection{Native functions}
+Due to computational efficiency, functions like \textit{findall} are natively implemented in Prolog compilers.
+It should be possible to implement \textit{findall} and alike at this point, as backtracking will be sound.
+This means that an attempt will be done to implement different native functions in this part.
+
+\subsection{Negation and cut}
+To complete the implementation of Prolog the usage of negation and cut will be made possible.
+As the implementation of especially cut might be quite complex, it will be considered as the final step of embedding Prolog in C\#.
+After this part the embedding is considered complete and a number of unit tests will be ran over the resulting embedding.
+It will also be compared to different Prolog compilers, using specific programs (from literature).
+
+\section{Planning}
+% How will you translate the steps you identified in the previous section to a concrete planning? Who will work on what?
+\subsection{Workload ditribution}
+
+We have made the following workload distribution:
+\begin{itemize}
+\item Sjoerd and Winand will work directly on the embedding itself.
+\item Anvar researches and writes about other embeddings of Prolog in other programming languages.
+\item Alexey will make unit tests.
+\item Roald works on both the implementation and research.
+\end{itemize}
+
+
+\subsection{Weekly planning}
+
+\begin{itemize}
+\item \textbf{Week 49}:\\
+Implement Term representation and Clauses.
+Begin writing unit tests for each aspect of the implementation that is being worked on from now.
+Start doing research on prolog embeddings in other languages and on the different aspects of the implementation.
+\\
+\item \textbf{Week 50}:\\
+Start working on Unification and Backtracking.
+\\
+\item \textbf{Week 51}:\\
+Finish implementing Unification and Backtracking and implement Mathematics.
+\\
+\item \textbf{Week 52 \& 1}: \\
+Christmas break, make sure all point for weeks 49 to 51 have been completed and possibly try to get ahead of schedule by completing work scheduled for week 2. 
+\\
+\item \textbf{Week 2}:\\
+Implement Native functions, start with implementing Negation and Cut.
+Start putting research together in the format of the final report.
+\\
+\item \textbf{Week 3}:\\
+Finish implementing Negation and Cut and thus the embedding part of the project.
+Write the final unit tests.
+Run unit tests and include results in the report
+\\
+\item \textbf{Week 4}:\\
+Finish the final details of the report and make a presentation. Practise presentation.
+\end{itemize}
+
+\end{document}

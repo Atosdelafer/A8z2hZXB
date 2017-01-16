@@ -1,0 +1,61 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}	
+\usepackage[T1]{fontenc}
+\usepackage{minted}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{Project Progress Prolog\\
+\vspace{1em}
+\large Concepts of Programming Languages
+}
+\author{Winand, Roald, Sjoerd, Alexey and Anvar}
+
+\begin{document}
+
+\section*{Progress Report - Prolog}
+
+\subsection*{Current progress}
+At the moment there is an implementation of Prolog in C\# that has very basic functionality.
+
+It is possible to define atoms, terms, compounds and clauses in an external file. It is also possible to define variables, although they are treated as atoms at the moment.
+
+We have created a data structure (called TermTree) to make the representation of a knowledge base searchable in an efficient way. Based on this an index is build that enables retrieving patterns in a fast and efficient way.
+
+Backtracking has been implemented, such that a simple query can be obtained from the knowledge base. This can be done through predefined code, or using an input interface.
+
+The code is it is at this moment can be found on Github: https://github.com/winandr/A8z2hZXB
+
+\subsection*{Deviation from planning}
+
+In our original planning, at the end of week 2 we should have had Unification, Backtracking and Mathematics implemented before the Christmas break, and by the end of week 2 we should have implemented Native functions and started on Cut and Negate.
+
+As it stands, backtracking and unification are nearly finished, while we have not yet started working on the other parts. Unification and Backtracking could be considered the fundamental parts of Prolog and therefore we spent some additional time on getting them right and implementing mathematics is not all that difficult to implement. In conclusion we are a bit behind schedule but we think it is possible to complete a functional embedding in Prolog within the coming weeks.
+
+\subsection*{Updated planning}
+\begin{itemize}
+\item \textbf{Week 2}:\\
+Finish implementing Backtracking and Unification. Implement Mathematics.
+\\
+\item \textbf{Week 3}:\\
+Start implementing Native functions, implement Negation and Cut.
+Start putting research together in the format of the final report.
+Finish implementing Negation and Cut and thus the embedding part of the project.
+Write the final unit tests.
+Run unit tests and include results in the report
+\\
+\item \textbf{Week 4}:\\
+Finish the final details of the report and make a presentation. Practise presentation.
+\end{itemize}
+
+\end{document}
