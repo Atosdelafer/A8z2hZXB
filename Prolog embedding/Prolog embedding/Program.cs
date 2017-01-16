@@ -44,30 +44,13 @@ namespace PrologEmbedding
 				}
 			}
 
-
 			// Outputing index
 			Console.Write (index.toString ());
 
 			foreach (int i in index.getMatchingTrees(new TermTree("human(X,b)"))) {
 				Console.WriteLine("--" + i);
 			}
-
-			Tuple<TermTree, Dictionary<int, Dictionary<String, String>>> result = index.getMatchingTrees2 (new TermTree ("human(X,Y,Z)"));
-
-			foreach (int k in result.Item2.Keys) {
-				Console.Write(k + " - ");
-				foreach (String k2 in result.Item2[k].Keys) {
-					Console.Write(k2 + ": " + result.Item2[k][k2] + ", ");
-				}
-				Console.WriteLine (" ");
-			}
-
-			/*Tuple<int[], Dictionary<String, String>> result = index.
-			for (int i = 0; i < result.Item1.Length; i++) {
-				Console.WriteLine (result.Item1[i]);
-				//Console.WriteLine (result.Item2[i]);
-			}
-*/
+                        
 			// Outputing index
 			Console.Write (index.toString ());
 
@@ -80,26 +63,54 @@ namespace PrologEmbedding
             inference();
 
         }
+        
 
         static private void inference()
         {
             string inputline;
-            int[] matchresult;
-            //bool[] inKnowledgeBase;
-            List<bool> inKnowledgeBase = new List<bool>();
-            
             while (true)
             {
                 inputline = Console.ReadLine();
-				matchresult = index.getMatchingTrees(new TermTree(inputline));
-
-                inKnowledgeBase = headRecursion(matchresult);
-                foreach (bool item in inKnowledgeBase)
+                Tuple<TermTree, Dictionary<int, Dictionary<String, String>>> result = index.getMatchingTrees2(new TermTree(inputline));
+                
+                List<int> lineNumbers = new List<int>();
+                List<bool> inKnowledgeBase = new List<bool>();
+                foreach (int k in result.Item2.Keys)
                 {
-                    Console.WriteLine(item);
+                    if (result.Item2[k].Count == 0)
+                    {
+                        lineNumbers.Add(k);
+                    }
+                    else
+                    {
+                        Console.Write(k + " - ");
+                        foreach (String k2 in result.Item2[k].Keys)
+                        {
+                            Console.Write(k2 + ": " + result.Item2[k][k2] + ", ");
+                        }
+                        Console.WriteLine(" ");
+                    }
                 }
-            }        
+                int linenumbercount = lineNumbers.Count;
+                if (linenumbercount > 0)
+                {
+                    int[] matchresult = new int[linenumbercount];
+                    int count = 0;
+                    foreach (int item in lineNumbers)
+                    {
+                        matchresult[count] = item;
+                        count++;
+                    }
+                    inKnowledgeBase = headRecursion(matchresult);
+                    foreach (bool item in inKnowledgeBase)
+                    {
+                        Console.WriteLine(item);
+                    }
+                }
+            }
         }
+
+       
 
         static private List<bool> headRecursion(int[] matchresult)
         {
@@ -218,7 +229,7 @@ namespace PrologEmbedding
         {
             bool endsInPeriod = true;
             char[] charsToTrim = {'.', ' '};
-            string[] lines = System.IO.File.ReadAllLines(@"testfile2.txt");
+            string[] lines = System.IO.File.ReadAllLines(@"testfile1.txt");
             for (int i = 0; i < lines.Length; i++)
             {
                 endsInPeriod = lines[i].EndsWith(".");
