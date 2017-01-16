@@ -10,4 +10,4 @@ This means that the flow is expressed in terms of relation represented as fact a
 By running a query over these relations, a computation can be done.
 
 ## More details
-In the <a href="https://github.com/winandr/A8z2hZXB/tree/master/reports" target="_blank">reports</a> directory more details about this project can be found in several reports.
+In the <a href="https://github.com/winandr/A8z2hZXB/tree/master/reports" target="_blank">this</a> directory more details about this project can be found in several reports.
