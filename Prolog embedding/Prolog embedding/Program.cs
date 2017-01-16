@@ -25,12 +25,12 @@ namespace PrologEmbedding
 
 				if (!line.Contains (":-")) {
 
-					if (ClauseValidator.isValidCompound (line)) {
+					if (ClauseValidator.isValidCompound (line) || ClauseValidator.isValidTerm (line)) {
 						TermTree test = new TermTree (line);
 
 						index.addTermTree (test, linenumber);
 						linenumber++;
-					}
+					} 
 						
 				} else {                        
 					var ClauseCheck = ClauseValidator.isValidAndDecomposesClause (line);
@@ -61,13 +61,12 @@ namespace PrologEmbedding
 				Console.WriteLine (" ");
 			}
 
-			/**Tuple<int[], Dictionary<String, String>> result = index.
+			/*Tuple<int[], Dictionary<String, String>> result = index.
 			for (int i = 0; i < result.Item1.Length; i++) {
 				Console.WriteLine (result.Item1[i]);
 				//Console.WriteLine (result.Item2[i]);
 			}
-**/
-			return;
+*/
 			// Outputing index
 			Console.Write (index.toString ());
 
@@ -218,7 +217,7 @@ namespace PrologEmbedding
         {
             bool endsInPeriod = true;
             char[] charsToTrim = {'.', ' '};
-            string[] lines = System.IO.File.ReadAllLines(@"testfile4.txt");
+            string[] lines = System.IO.File.ReadAllLines(@"testfile2.txt");
             for (int i = 0; i < lines.Length; i++)
             {
                 endsInPeriod = lines[i].EndsWith(".");
