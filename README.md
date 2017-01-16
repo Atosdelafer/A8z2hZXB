@@ -1,4 +1,4 @@
-# Prolog Embedding in C#
+# Prolog Embedding in C&#35;
 
 This repository contains the results of our attempt to embed Prolog in C#, a general-purpose logic programming language.
 It is considered as one of the first and most popular logic programming language available.
