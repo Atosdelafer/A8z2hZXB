@@ -36,7 +36,7 @@ american(X) :- ancestor(anne,X).
 relation(X,Y) :- ancestor(A,X), ancestor(A,Y).
 
 father(X,Y) :- male(X),parent(X,Y).
-father(god, _) :- male(god).
+father(god, _) :- male(god)
 mother(X,Y) :- female(X),parent(X,Y).
 son(X,Y) :- male(X),parent(Y,X).
 daughter(X,Y) :- female(X),parent(Y,X).

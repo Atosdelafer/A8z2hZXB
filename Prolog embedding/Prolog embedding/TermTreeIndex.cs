@@ -66,8 +66,8 @@ namespace PrologEmbedding
 		}
 	
 		static private Tuple<string, int, ArrayList> termToPattern(string term) {
-			int leftBrace = term.IndexOf ("(");
-			int rightBrace = term.LastIndexOf (")");
+			int leftBrace = term.IndexOf("(");
+			int rightBrace = term.LastIndexOf(")");
 			int arity;
 			string name;
 			ArrayList children = new ArrayList ();
@@ -194,7 +194,7 @@ namespace PrologEmbedding
 
 			int[] indices = termTreeIndex.indices.ToArray ();
 
-			if (Regex.Match (tree.term, "^[A-Z_]").Success) {
+			if(Regex.Match(tree.term, "^[A-Z_]").Success) {
 
 				// Storing variable bindings
 				foreach (TermTreeIndex branch in termTreeIndex.branches [parameter].Values) {

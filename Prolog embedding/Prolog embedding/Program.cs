@@ -71,7 +71,15 @@ namespace PrologEmbedding
                 resultshere = inference(inputline);
                 foreach (string printready in resultshere)
                 {
-                    Console.WriteLine(printready);
+                    string[] splitResult = printready.Split('#');
+                    if (splitResult.Length > 1)
+                    {
+                        Console.WriteLine(splitResult[0] + " = " + splitResult[1] + ".");
+                    }
+                    else
+                    {
+                        Console.WriteLine(splitResult[0]);
+                    }
                 }
             }
         }
@@ -89,23 +97,34 @@ namespace PrologEmbedding
             List<string> resultString = new List<string>();
 
 
+            //need to make sure also facts are checked
+            foreach (var item in result.Item2.Keys)
+            {
+                if (result.Item2[item].Count != 0)
+                {
+                    inKnowledgeBaseVar = headRecursionVar(result);
+                    resultString = inKnowledgeBaseVar;
+                }
+                else
+                {
+                    lineNumbers.Add(item);
+                }
+            }
+
+
             //Part for Var
-            
-            //if (lineNumbersVar.Count > 0)
-            if (result.Item2.Count != 0)
+
+
+            /*if (result.Item2[0].Count != 0)
             {
                 inKnowledgeBaseVar = headRecursionVar(result);
-                /*foreach (string item in inKnowledgeBaseVar)
-                {
-                    Console.WriteLine(item);
-                }*/
                 resultString = inKnowledgeBaseVar;
-            }
-            else
+            }*/
+            int linenumbercount = lineNumbers.Count;
+            if(linenumbercount != 0)
             {
                 //Part for No Var.
-
-                int linenumbercount = lineNumbers.Count;
+                
                 if (linenumbercount > 0)
                 {
                     int[] matchresult = new int[linenumbercount];
