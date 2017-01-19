@@ -194,7 +194,7 @@ namespace PrologEmbedding
 
 			int[] indices = termTreeIndex.indices.ToArray ();
 
-			if(Regex.Match(tree.term, "^[A-Z_]").Success) {
+			if (Regex.Match (tree.term, "^[A-Z_]").Success) {
 
 				// Storing variable bindings
 				foreach (TermTreeIndex branch in termTreeIndex.branches [parameter].Values) {
@@ -213,7 +213,7 @@ namespace PrologEmbedding
 				}
 
 				return indices;
-			} else if ((termTreeIndex.branches [parameter].ContainsKey (tree.key))) {
+			}  else if ((termTreeIndex.branches [parameter].ContainsKey (tree.key))) {
 				for (int b = 0; b < tree.arity; b++) {
 					indices = indices.Intersect (
 						getMatchingTrees2 (termTreeIndex.branches [parameter] [tree.key], tree.branches [b], b, indicesAndVariables)
@@ -225,7 +225,28 @@ namespace PrologEmbedding
 
 				return indices;
 			} else {
-				return new int[0];
+				// Retrieve branches that are variables
+			
+				Dictionary<int, bool> indicesVariables = new Dictionary<int, bool>();
+
+				foreach (String k in termTreeIndex.branches [parameter].Keys) {
+					if (Regex.Match (k, "^[A-Z_]").Success) {
+
+						foreach (int i in termTreeIndex.branches [parameter][k].indices) {
+							indicesAndVariables [i] [tree.term] = k.Substring(0, k.IndexOf('/'));
+							indicesVariables [i] = true;
+						}
+					}
+				}
+
+				int[] indicesArray = new int[indicesVariables.Count];
+				indicesVariables.Keys.CopyTo (indicesArray, 0);
+				
+				indices = indices.Intersect (indicesArray).ToArray ();
+
+				//Console.WriteLine(termTreeIndex.branches [parameter].ContainsKey (tree.key));
+						
+				return indices;
 			}
 		}
 
