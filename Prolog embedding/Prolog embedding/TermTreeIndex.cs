@@ -77,7 +77,7 @@ namespace PrologEmbedding
 				arity = 0;
 			} else {
 
-				name = term.Substring (0, leftBrace);
+				name = term.Substring (0, leftBrace).Trim();
 
 				int level = 0;
 				int left = leftBrace;
@@ -89,11 +89,11 @@ namespace PrologEmbedding
 						level--;
 					else if (term [i] == ',' && level == 1) {
 						arity++;
-						children.Add (term.Substring (left + 1, i - left - 1));
+						children.Add (term.Substring (left + 1, i - left - 1).Trim());
 						left = i;
 					}
 				}
-				children.Add (term.Substring (left + 1, rightBrace - left - 1));
+				children.Add (term.Substring (left + 1, rightBrace - left - 1).Trim());
 			}
 
 			return new Tuple<string, int, ArrayList>(name, arity, children);
