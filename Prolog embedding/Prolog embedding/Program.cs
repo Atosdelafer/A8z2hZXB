@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace PrologEmbedding
 {
@@ -14,11 +15,6 @@ namespace PrologEmbedding
 
         static void Main(string[] args)
         {
-			//Console.WriteLine (ClauseValidator.isValidMath ("X is B"));
-
-			//return;
-			//storeClauseTail ("foo(bar),doz(coo)", 0);
-
 			knowledgeBase = FileReader();
 			int linenumber = 0;
 			foreach (string line in knowledgeBase) {
@@ -60,38 +56,65 @@ namespace PrologEmbedding
 					Console.WriteLine (treeArray.Value [i].toString () + ":" + treeArray.Key);
 				}
 			}
-            inference();
 
-        }
-        
 
-        static private void inference()
-        {
+            List<string> resultshere = new List<string>();
             string inputline;
             while (true)
             {
                 inputline = Console.ReadLine();
-                Tuple<TermTree, Dictionary<int, Dictionary<String, String>>> result = index.getMatchingTrees2(new TermTree(inputline));
-                
-                List<int> lineNumbers = new List<int>();
-                List<bool> inKnowledgeBase = new List<bool>();
-                foreach (int k in result.Item2.Keys)
+                resultshere = inference(inputline);
+                foreach (string printready in resultshere)
                 {
-                    if (result.Item2[k].Count == 0)
+                    string[] splitResult = printready.Split('#');
+                    if (splitResult.Length > 1)
                     {
-                        lineNumbers.Add(k);
+                        Console.WriteLine(splitResult[0] + " = " + splitResult[1] + ".");
                     }
                     else
                     {
-                        Console.Write(k + " - ");
-                        foreach (String k2 in result.Item2[k].Keys)
-                        {
-                            Console.Write(k2 + ": " + result.Item2[k][k2] + ", ");
-                        }
-                        Console.WriteLine(" ");
+                        Console.WriteLine(splitResult[0]);
                     }
                 }
-                int linenumbercount = lineNumbers.Count;
+            }
+        }
+        
+
+        static private List<string> inference(string inputline)
+        {
+            // Todo: clauses cannot be queried with one var and one fact
+
+            Tuple<TermTree, Dictionary<int, Dictionary<String, String>>> result = index.getMatchingTrees2(new TermTree(inputline));
+                
+            List<int> lineNumbers = new List<int>();
+            List<int> lineNumbersVar = new List<int>();
+            List<bool> inKnowledgeBase = new List<bool>();
+            List<string> inKnowledgeBaseVar = new List<string>();
+            List<string> resultString = new List<string>();
+            
+            // Distinguishes between with and without vars
+
+            foreach (var item in result.Item2.Keys)
+            {
+                if (result.Item2[item].Count != 0)
+                {
+                    // The part for query'ing with variables
+                    inKnowledgeBaseVar = headRecursionVar(result);
+                    resultString = inKnowledgeBaseVar;
+                }
+                else
+                {
+                    // The part for query'ing without variables
+                    lineNumbers.Add(item);
+                }
+            }
+
+
+            // For handling queries withour variables:
+            
+            int linenumbercount = lineNumbers.Count;
+            if(linenumbercount != 0)
+            {
                 if (linenumbercount > 0)
                 {
                     int[] matchresult = new int[linenumbercount];
@@ -104,13 +127,165 @@ namespace PrologEmbedding
                     inKnowledgeBase = headRecursion(matchresult);
                     foreach (bool item in inKnowledgeBase)
                     {
-                        Console.WriteLine(item);
+                        resultString.Add(item.ToString());
                     }
                 }
             }
+            return resultString;
         }
 
-       
+        static List<string> Testmethod(int lineNumber, Dictionary<string, string> variableBindings)
+        {
+            // This method seperates the tail of a clause into queries
+            List<string> resultlist = new List<string>();
+            string temporary;
+
+            foreach (var item in clauseTails[lineNumber])
+            {
+                temporary = "";
+                //access the seperate tail terms
+                temporary += item.term + "(";
+
+                foreach (var item2 in item.branches)
+                {
+                    //acces their arguments
+                    string intermediateresult = item2.term;
+                    if (variableBindings.ContainsKey(intermediateresult))
+                    {
+                        intermediateresult = variableBindings[intermediateresult];
+                    }
+                    temporary += intermediateresult + ",";
+                }
+                temporary = temporary.TrimEnd(',');
+                temporary += ")";
+                resultlist.Add(temporary);
+            }
+            return resultlist;
+        }
+
+        static private List<string> headRecursionVar(Tuple<TermTree, Dictionary<int, Dictionary<String, String>>> result)
+        {
+            List<string> resultstring = new List<string>();
+
+            foreach (int k in result.Item2.Keys)
+            {
+                if (!clauseTails.ContainsKey(k))
+                {
+                    foreach (String k2 in result.Item2[k].Keys)
+                    {
+                        resultstring.Add(k2 + "#" + result.Item2[k][k2]);
+                    }
+                }
+                else
+                {
+                    int clauseTailsLength = clauseTails[k].Length;
+                    Dictionary<string, string> variableBindings = new Dictionary<string, string>();
+                    foreach (String k2 in result.Item2[k].Keys)
+                    {
+                        variableBindings.Add(result.Item2[k][k2], k2);
+                    }
+                    
+                    List<string>[] resultstring2 = new List<string>[clauseTailsLength];
+                    int count = 0;
+
+                    resultstring = Testmethod(k, variableBindings);
+
+                    int[] arityArray = new int[clauseTailsLength];
+
+                    for (int tailobject = 0; tailobject < clauseTailsLength; tailobject++)
+                    {
+                        arityArray[tailobject] = clauseTails[k][tailobject].arity;
+                    }
+
+                    string tempstring;
+
+                    foreach (string string2 in resultstring)
+                    {
+                        tempstring = Regex.Replace(string2, @"\s+", "");
+                        resultstring2[count] = inference(tempstring);
+                        count++;
+                    }
+
+                    if (clauseTailsLength == 1)
+                    {
+                        resultstring = resultstring2[0];
+                    }
+                    else
+                    {
+                        Dictionary<string, string> comparisonDict = new Dictionary<string, string>();
+
+                        //split
+
+                        int[] countingmechanism = new int[clauseTailsLength];
+                        int[] countingmechanismcap = new int[clauseTailsLength];
+                        int numberofrounds = 1;
+                        for (int j = 0; j < clauseTailsLength; j++)
+                        {
+                            countingmechanismcap[j] = resultstring2[j].Count/arityArray[j];
+                            numberofrounds *= (resultstring2[j].Count/arityArray[j]);
+                        }
+
+                        //merge
+
+                        int currentslot = clauseTailsLength - 1;
+                        for (int k2 = 0; k2 < numberofrounds; k2++)
+                        {
+                            bool finalcheck = true;
+                            Char delimiter = '#';
+                            for (int z = 0; z < clauseTailsLength; z++)
+                            {
+                                for (int zsub = 0; zsub < arityArray[z]; zsub++)
+                                {
+                                    string[] words = resultstring2[z].ElementAt(countingmechanism[z]*arityArray[z] + zsub).Split(delimiter);
+                                    string test;
+                                    if (comparisonDict.TryGetValue(words[0], out test))
+                                    {
+                                        if (test != words[1])
+                                        {
+                                            finalcheck = false;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        comparisonDict.Add(words[0], words[1]);
+                                    }
+                                }
+                            }
+
+                            if (finalcheck)
+                            {
+                                foreach (KeyValuePair<string, string> pair in comparisonDict)
+                                {
+                                    resultstring.Add(pair.Key + "#" + pair.Value);
+                                }
+                            }
+
+                            comparisonDict.Clear();
+
+                            if (countingmechanism[currentslot] < countingmechanismcap[currentslot] - 1)
+                            {
+                                countingmechanism[currentslot]++;
+                            }
+                            else
+                            {
+                                while (countingmechanism[currentslot] == countingmechanismcap[currentslot] - 1 && currentslot != 0)
+                                {
+                                    currentslot--;
+
+                                }
+                                countingmechanism[currentslot]++;
+                                for (int l = clauseTailsLength - 1; l > currentslot; l--)
+                                {
+                                    countingmechanism[l] = 0;
+                                }
+                                currentslot = clauseTailsLength - 1;
+                            }
+                        }
+                    }
+                }                
+            }
+            return resultstring;
+        }
 
         static private List<bool> headRecursion(int[] matchresult)
         {
@@ -121,7 +296,6 @@ namespace PrologEmbedding
             }
             else
             {
-                //for (int i = 0; i < matchresult.Length; i++)
                 foreach (int i in matchresult)
                 {
                     if (!clauseTails.ContainsKey(i))
@@ -229,7 +403,7 @@ namespace PrologEmbedding
         {
             bool endsInPeriod = true;
             char[] charsToTrim = {'.', ' '};
-            string[] lines = System.IO.File.ReadAllLines(@"testfile1.txt");
+            string[] lines = System.IO.File.ReadAllLines(@"familytree.txt");
             for (int i = 0; i < lines.Length; i++)
             {
                 endsInPeriod = lines[i].EndsWith(".");
