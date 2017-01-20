@@ -66,16 +66,21 @@ namespace PrologEmbedding
                 resultshere = inference(inputline);
                 foreach (string printready in resultshere)
                 {
-                    string[] splitResult = printready.Split('#');
-                    if (splitResult.Length > 1)
+                    //to remove unnecesary lines
+                    if (printready != "True#True" && !printready.Contains('(') )
                     {
-                        Console.WriteLine(splitResult[0] + " = " + splitResult[1] + ".");
-                    }
-                    else
-                    {
-                        Console.WriteLine(splitResult[0]);
+                        string[] splitResult = printready.Split('#');
+                        if (splitResult.Length > 1)
+                        {
+                            Console.WriteLine(splitResult[0] + " = " + splitResult[1] + ".");
+                        }
+                        else
+                        {
+                            Console.WriteLine(splitResult[0]);
+                        }
                     }
                 }
+                Console.WriteLine("");
             }
         }
         
@@ -175,6 +180,10 @@ namespace PrologEmbedding
                     {
                         resultstring.Add(k2 + "#" + result.Item2[k][k2]);
                     }
+                    if (result.Item2[k].Keys.Count < result.Item1.arity)
+                    {
+                        resultstring.Add("True#True");
+                    }
                 }
                 else
                 {
@@ -247,6 +256,13 @@ namespace PrologEmbedding
                                     }
                                     else
                                     {
+                                       
+                                        if (words.Length == 1)
+                                        {
+                                            Array.Resize(ref words, words.Length + 1);
+                                            words[1] = words[0];
+                                        }
+                                        
                                         comparisonDict.Add(words[0], words[1]);
                                     }
                                 }
