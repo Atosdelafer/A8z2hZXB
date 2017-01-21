@@ -60,9 +60,25 @@ namespace PrologEmbedding
 
             List<string> resultshere = new List<string>();
             string inputline;
+            string neverUsed;
             while (true)
             {
                 inputline = Console.ReadLine();
+                Tuple<TermTree, Dictionary<int, Dictionary<String, String>>> filterResult = index.getMatchingTrees2(new TermTree(inputline));
+                Dictionary<string, string> filterDict = new Dictionary<string, string>();
+                foreach (int k in filterResult.Item2.Keys)
+                {
+                    foreach (String k2 in filterResult.Item2[k].Keys)
+                    {
+                        if (!filterDict.TryGetValue(k2, out neverUsed))
+                        {
+                            filterDict.Add(k2, k2);
+                        }
+                        
+                    }
+                }
+                filterDict.Add("True", "True");
+                filterDict.Add("False", "False");
                 resultshere = inference(inputline);
                 foreach (string printready in resultshere)
                 {
@@ -72,7 +88,10 @@ namespace PrologEmbedding
                         string[] splitResult = printready.Split('#');
                         if (splitResult.Length > 1)
                         {
-                            Console.WriteLine(splitResult[0] + " = " + splitResult[1] + ".");
+                            if (filterDict.ContainsKey(splitResult[0]))
+                            {
+                                Console.WriteLine(splitResult[0] + " = " + splitResult[1] + ".");
+                            }
                         }
                         else
                         {
