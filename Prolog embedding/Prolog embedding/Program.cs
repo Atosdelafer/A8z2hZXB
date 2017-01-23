@@ -79,37 +79,33 @@ namespace PrologEmbedding
                 }
                 filterDict.Add("True", "True");
                 filterDict.Add("False", "False");
-                resultshere = inference(inputline, 0);
-				if (resultshere == null)
-					Console.WriteLine ("Infinite recursion!");
-				else {
-
-					foreach (string printready in resultshere) {
-						//to remove unnecesary lines
-						if (printready != "True#True" && !printready.Contains ('(')) {
-							string[] splitResult = printready.Split ('#');
-
-							if (splitResult.Length > 1) {
-								if (filterDict.ContainsKey (splitResult [0])) {
-									Console.WriteLine (splitResult [0] + " = " + splitResult [1] + ".");
-								}
-							} else {
-								Console.WriteLine (splitResult [0]);
-							}
-						}
-					}
-					Console.WriteLine ("");
-				}
+                resultshere = inference(inputline);
+                foreach (string printready in resultshere)
+                {
+                    //to remove unnecesary lines
+                    if (printready != "True#True" && !printready.Contains('(') )
+                    {
+                        string[] splitResult = printready.Split('#');
+                        if (splitResult.Length > 1)
+                        {
+                            if (filterDict.ContainsKey(splitResult[0]))
+                            {
+                                Console.WriteLine(splitResult[0] + " = " + splitResult[1] + ".");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine(splitResult[0]);
+                        }
+                    }
+                }
+                Console.WriteLine("");
             }
         }
         
 
-		static private List<string> inference(string inputline, int level)
+        static private List<string> inference(string inputline)
         {
-			if (level > 5000) {
-				return null;
-			}
-			level++;
             // Todo: clauses cannot be queried with one var and one fact
 
             Tuple<TermTree, Dictionary<int, Dictionary<String, String>>> result = index.getMatchingTrees2(new TermTree(inputline));
@@ -127,9 +123,7 @@ namespace PrologEmbedding
                 if (result.Item2[item].Count != 0)
                 {
                     // The part for query'ing with variables
-                    inKnowledgeBaseVar = headRecursionVar(result, level);
-					if (inKnowledgeBaseVar == null)
-						return null;
+                    inKnowledgeBaseVar = headRecursionVar(result);
                     resultString = inKnowledgeBaseVar;
                 }
                 else
@@ -154,9 +148,7 @@ namespace PrologEmbedding
                         matchresult[count] = item;
                         count++;
                     }
-                    inKnowledgeBase = headRecursion(matchresult, level);
-					if (inKnowledgeBase == null)
-						return null;
+                    inKnowledgeBase = headRecursion(matchresult);
                     foreach (bool item in inKnowledgeBase)
                     {
                         resultString.Add(item.ToString());
@@ -195,12 +187,8 @@ namespace PrologEmbedding
             return resultlist;
         }
 
-		static private List<string> headRecursionVar(Tuple<TermTree, Dictionary<int, Dictionary<String, String>>> result, int level)
+        static private List<string> headRecursionVar(Tuple<TermTree, Dictionary<int, Dictionary<String, String>>> result)
         {
-			if (level > 5000) {
-				return null;
-			}
-			level++;
             List<string> resultstring = new List<string>();
 
             foreach (int k in result.Item2.Keys)
@@ -242,9 +230,7 @@ namespace PrologEmbedding
                     foreach (string string2 in resultstring)
                     {
                         tempstring = Regex.Replace(string2, @"\s+", "");
-                        resultstring2[count] = inference(tempstring, level);
-						if (resultstring2[count] == null)
-							return null;
+                        resultstring2[count] = inference(tempstring);
                         count++;
                     }
 
@@ -336,12 +322,8 @@ namespace PrologEmbedding
             return resultstring;
         }
 
-		static private List<bool> headRecursion(int[] matchresult, int level)
+        static private List<bool> headRecursion(int[] matchresult)
         {
-			if (level > 5000) {
-				return null;
-			}
-			level++;
             List<bool> recursionList = new List<bool>();
             if (matchresult.Length == 0)
             {
@@ -367,10 +349,8 @@ namespace PrologEmbedding
                             int numberofrounds = 1;
                             for (int j = 0; j < clauseTailsLength; j++)
                             {
-                                multipleClauses[j] = headRecursion(index.getMatchingTrees(clauseTails[i][j]), level);
-								if (multipleClauses [j] == null)
-									return null;
-								countingmechanismcap[j] = multipleClauses[j].Count;
+                                multipleClauses[j] = headRecursion(index.getMatchingTrees(clauseTails[i][j]));
+                                countingmechanismcap[j] = multipleClauses[j].Count;
                                 numberofrounds *= multipleClauses[j].Count;
                             }
                             //merge
@@ -418,7 +398,7 @@ namespace PrologEmbedding
                         }
                         else
                         {
-							recursionList.AddRange(headRecursion(index.getMatchingTrees(clauseTails[i][0]), level));
+                            recursionList.AddRange(headRecursion(index.getMatchingTrees(clauseTails[i][0])));
                         }
                     }
                 }
