@@ -79,7 +79,7 @@ namespace PrologEmbedding
                 }
                 filterDict.Add("True", "True");
                 filterDict.Add("False", "False");
-                resultshere = inference(inputline, 0);
+                resultshere = inference(inputline);
                 foreach (string printready in resultshere)
                 {
                     //to remove unnecesary lines
@@ -104,16 +104,16 @@ namespace PrologEmbedding
         }
         
 
-        static private List<string> inference(string inputline, int level)
+        static private List<string> inference(string inputline)
         {
             // Todo: clauses cannot be queried with one var and one fact
 
             Tuple<TermTree, Dictionary<int, Dictionary<String, String>>> result = index.getMatchingTrees2(new TermTree(inputline));
                 
             List<int> lineNumbers = new List<int>();
-            //List<int> lineNumbersVar = new List<int>();
+            List<int> lineNumbersVar = new List<int>();
             List<bool> inKnowledgeBase = new List<bool>();
-            //List<string> inKnowledgeBaseVar = new List<string>();
+            List<string> inKnowledgeBaseVar = new List<string>();
             List<string> resultString = new List<string>();
             
             // Distinguishes between with and without vars
@@ -123,7 +123,8 @@ namespace PrologEmbedding
                 if (result.Item2[item].Count != 0)
                 {
                     // The part for query'ing with variables
-					resultString= headRecursionVar(result, 0);
+                    inKnowledgeBaseVar = headRecursionVar(result);
+                    resultString = inKnowledgeBaseVar;
                 }
                 else
                 {
@@ -147,7 +148,7 @@ namespace PrologEmbedding
                         matchresult[count] = item;
                         count++;
                     }
-                    inKnowledgeBase = headRecursion(matchresult, level);
+                    inKnowledgeBase = headRecursion(matchresult);
                     foreach (bool item in inKnowledgeBase)
                     {
                         resultString.Add(item.ToString());
@@ -186,17 +187,22 @@ namespace PrologEmbedding
             return resultlist;
         }
 
-        static private List<string> headRecursionVar(Tuple<TermTree, Dictionary<int, Dictionary<String, String>>> result, int level)
+        static private List<string> headRecursionVar(Tuple<TermTree, Dictionary<int, Dictionary<String, String>>> result)
         {
-			level++;
             List<string> resultstring = new List<string>();
 
             foreach (int k in result.Item2.Keys)
             {
                 if (!clauseTails.ContainsKey(k))
                 {
-                    foreach (String k2 in result.Item2[k].Keys) resultstring.Add(k2 + "#" + result.Item2[k][k2]);
-                    if (result.Item2[k].Keys.Count < result.Item1.arity) resultstring.Add("True#True");
+                    foreach (String k2 in result.Item2[k].Keys)
+                    {
+                        resultstring.Add(k2 + "#" + result.Item2[k][k2]);
+                    }
+                    if (result.Item2[k].Keys.Count < result.Item1.arity)
+                    {
+                        resultstring.Add("True#True");
+                    }
                 }
                 else
                 {
@@ -224,7 +230,7 @@ namespace PrologEmbedding
                     foreach (string string2 in resultstring)
                     {
                         tempstring = Regex.Replace(string2, @"\s+", "");
-                        resultstring2[count] = inference(tempstring, level);
+                        resultstring2[count] = inference(tempstring);
                         count++;
                     }
 
@@ -262,8 +268,11 @@ namespace PrologEmbedding
                                     string test;
                                     if (comparisonDict.TryGetValue(words[0], out test))
                                     {
-                                        if (test != words[1]) finalcheck = false;
-                                    } 
+                                        if (test != words[1])
+                                        {
+                                            finalcheck = false;
+                                        }
+                                    }
                                     else
                                     {
                                        
@@ -283,14 +292,11 @@ namespace PrologEmbedding
                                 foreach (KeyValuePair<string, string> pair in comparisonDict)
                                 {
                                     resultstring.Add(pair.Key + "#" + pair.Value);
-									if (level == 1) Console.WriteLine (pair.Key + "#" + pair.Value);
                                 }
                             }
 
                             comparisonDict.Clear();
 
-							countingMechanism (ref currentslot, ref countingmechanism, ref countingmechanismcap, clauseTailsLength);
-							/*
                             if (countingmechanism[currentslot] < countingmechanismcap[currentslot] - 1)
                             {
                                 countingmechanism[currentslot]++;
@@ -300,43 +306,25 @@ namespace PrologEmbedding
                                 while (countingmechanism[currentslot] == countingmechanismcap[currentslot] - 1 && currentslot != 0)
                                 {
                                     currentslot--;
+
                                 }
                                 countingmechanism[currentslot]++;
-                                for (int l = clauseTailsLength - 1; l > currentslot; l--) countingmechanism[l] = 0;
+                                for (int l = clauseTailsLength - 1; l > currentslot; l--)
+                                {
+                                    countingmechanism[l] = 0;
+                                }
                                 currentslot = clauseTailsLength - 1;
                             }
-                            */
                         }
-
                     }
                 }                
-
-
             }
             return resultstring;
         }
 
-		static private void countingMechanism(ref int current, ref int[] counterArray1, ref int[] counterArray2, int size) {
-			if (counterArray1[current] < counterArray2[current] - 1)
-			{
-				counterArray1[current]++;
-			}
-			else
-			{
-				while (counterArray1[current] == counterArray2[current] - 1 && current != 0)
-				{
-					current--;
-				}
-				counterArray1[current]++;
-				for (int l = size - 1; l > size; l--) counterArray1[l] = 0;
-				current = size - 1;
-			}
-		}
-
-        static private List<bool> headRecursion(int[] matchresult, int level)
+        static private List<bool> headRecursion(int[] matchresult)
         {
             List<bool> recursionList = new List<bool>();
-
             if (matchresult.Length == 0)
             {
                 recursionList.Add(false);
@@ -361,7 +349,7 @@ namespace PrologEmbedding
                             int numberofrounds = 1;
                             for (int j = 0; j < clauseTailsLength; j++)
                             {
-                                multipleClauses[j] = headRecursion(index.getMatchingTrees(clauseTails[i][j]), level);
+                                multipleClauses[j] = headRecursion(index.getMatchingTrees(clauseTails[i][j]));
                                 countingmechanismcap[j] = multipleClauses[j].Count;
                                 numberofrounds *= multipleClauses[j].Count;
                             }
@@ -379,11 +367,15 @@ namespace PrologEmbedding
                                     }
                                 }
                                 
-                                recursionList.Add(finalcheck);
-                                
-								countingMechanism (ref currentslot, ref countingmechanism, ref countingmechanismcap, clauseTailsLength);
-
-								/*
+                                if (finalcheck)
+                                {
+                                    recursionList.Add(true);
+                                }
+                                else
+                                {
+                                    recursionList.Add(false);
+                                }
+                               
                                 if (countingmechanism[currentslot] < countingmechanismcap[currentslot] - 1)
                                 {
                                     countingmechanism[currentslot]++;
@@ -393,17 +385,20 @@ namespace PrologEmbedding
                                     while (countingmechanism[currentslot] == countingmechanismcap[currentslot]- 1 && currentslot != 0)
                                     {
                                         currentslot--;
+                                        
                                     }
                                     countingmechanism[currentslot]++;
-                                    for (int l = clauseTailsLength - 1; l > currentslot; l--) countingmechanism[l] = 0;
+                                    for (int l = clauseTailsLength - 1; l > currentslot; l--)
+                                    {
+                                        countingmechanism[l] = 0;
+                                    }
                                     currentslot = clauseTailsLength - 1;
                                 }
-                                */
                             }
                         }
                         else
                         {
-                            recursionList.AddRange(headRecursion(index.getMatchingTrees(clauseTails[i][0]),level));
+                            recursionList.AddRange(headRecursion(index.getMatchingTrees(clauseTails[i][0])));
                         }
                     }
                 }
