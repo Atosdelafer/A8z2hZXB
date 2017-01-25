@@ -52,12 +52,21 @@ Placeholder
 # Implementation (5)
 ##Proof search(1)
 
-Placeholder
+The following steps are taken:
+
+* check for queries with unbound/bound variables
+-> different return types, bool or variable bindings.
+* check for matches with clauses
+-> either just match
+-> go into recursion
 
 # Implementation (6)
 ##Proof search(2)
 
-Placeholder
+* Seperate parts of the tail queried seperately
+* Resulting bindings checked for consistency
+* Requires elaborate enumeration as number of tails is not known in advance.
+* Consistent combinations of variable bindings returned to call function
 
 
 #Results (1)
