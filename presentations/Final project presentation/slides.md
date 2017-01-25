@@ -18,7 +18,9 @@ sansfont: Ubuntu Light
 
 # Problem definition
 
-Placeholder
+* Prolog is a logic programmning language 
+* The way and the structure it uses it lies at the core of programming in Prolog
+* Embedding of Prolog in C# and compare to SWI Prolog 7.2.3
 
 # Methodolology
 
@@ -37,12 +39,16 @@ Placeholder
 # Implementation (2)
 ##Validation
 
-Placeholder
+* a clause which means that the left and right hand side need to be validated individually
+* a term which means that validation is done 
+* a compound which means that the contnents should be decomposed to validate its individual parts on the fact that they need to be terms
 
 # Implementation (3)
 ##Representation
 
-Placeholder
+The nodes of a termTree consists either a term or a variavle.
+((figure 1.))
+
 
 # Implementation (4)
 ##Querying
@@ -52,21 +58,12 @@ Placeholder
 # Implementation (5)
 ##Proof search(1)
 
-The following steps are taken:
-
-* check for queries with unbound/bound variables
--> different return types, bool or variable bindings.
-* check for matches with clauses
--> either just match
--> go into recursion
+Placeholder
 
 # Implementation (6)
 ##Proof search(2)
 
-* Seperate parts of the tail queried seperately
-* Resulting bindings checked for consistency
-* Requires elaborate enumeration as number of tails is not known in advance.
-* Consistent combinations of variable bindings returned to call function
+Placeholder
 
 
 #Results (1)
