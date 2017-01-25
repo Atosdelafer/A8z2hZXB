@@ -39,3 +39,16 @@ Next we go into recursion, calling inference() on the seperate parts of the tail
 ###HeadRecursion
 
 Should the query not contain any variables, or should all variables be bound, inference() calls not the headRecursionVar method but the headRecursion method instead. This method is quite similar to HeadRecursionVar, but is simpler due to the lack of variables which are not yet bound. This makes comparison of terms a lot more straightforward and the use of a function like Testmethod to prepare the terms in the clausetail to be used as a query is not neccesary. The functionality of the method can be understood in a straightforward manner by comparing to the description of headRecursionVar.
+
+## TermTreeIndex.cs
+This file contains the classes for term trees and the so called term tree index. It is in the same file, because the term tree index is a variant of the term tree, but it does not actually extend on it.
+
+There are a number of methods in these classes which are quite self-explainatory, like the *initialize* method and several add methods. There are a method which will be clarified in the upcomming section.
+
+### getMatchingTrees 
+The method getMatchingTrees tries to match a given tree with trees in a TermTreeIndex object. This object contains a datastructure to retrieve matches in a fast manner. It matches the nodes of the tree to those in a the index in a recursive manner and returns all the matching indices.
+
+In case of the *getMatchingTrees2* the return value also consists of the variable matches, so a binding can be done based an the matches and the possible variables.
+
+## ClauseValidator.cs
+In this file a class is defined which can be used for the validation of clauses and terms. There are different methods which can be used in a staged way, so it can easily be determined what kind of term is in a specific string.
