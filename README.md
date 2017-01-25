@@ -48,7 +48,8 @@ There are a number of methods in these classes which are quite self-explainatory
 ### getMatchingTrees 
 The method getMatchingTrees tries to match a given tree with trees in a TermTreeIndex object. This object contains a datastructure to retrieve matches in a fast manner. It matches the nodes of the tree to those in a the index in a recursive manner and returns all the matching indices.
 
-In case of the *getMatchingTrees2* the return value also consists of the variable matches, so a binding can be done based an the matches and the possible variables.
+In case of the *getMatchingTrees2* the return value also consists of the variable matches, so a binding can be done based on these matches and the possible variables.
 
 ## ClauseValidator.cs
 In this file a class is defined which can be used for the validation of clauses and terms. There are different methods which can be used in a staged way, so it can easily be determined what kind of term is in a specific string.
+One can call *isValidTerm* to check whether something is a term, or *isValidVariable* to see whether it as a variable. When both are not the case *isValidCompound* can be used to determine whether something is a compound.
