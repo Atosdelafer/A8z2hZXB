@@ -39,6 +39,7 @@ namespace PrologEmbedding
 					}
 				}
 			}
+            /*
 
 			// Outputing index
 			Console.Write (index.toString ());
@@ -55,15 +56,18 @@ namespace PrologEmbedding
 				for (int i = 0; i < treeArray.Value.Length; i++) {
 					Console.WriteLine (treeArray.Value [i].toString () + ":" + treeArray.Key);
 				}
-			}
+			}*/
 
 
             List<string> resultshere = new List<string>();
             string inputline;
             string neverUsed;
+            
             while (true)
             {
                 inputline = Console.ReadLine();
+                string noReply = "noreply";
+
                 Tuple<TermTree, Dictionary<int, Dictionary<String, String>>> filterResult = index.getMatchingTrees2(new TermTree(inputline));
                 Dictionary<string, string> filterDict = new Dictionary<string, string>();
                 foreach (int k in filterResult.Item2.Keys)
@@ -91,13 +95,19 @@ namespace PrologEmbedding
                             if (filterDict.ContainsKey(splitResult[0]))
                             {
                                 Console.WriteLine(splitResult[0] + " = " + splitResult[1] + ".");
+                                noReply = "reply";
                             }
                         }
                         else
                         {
                             Console.WriteLine(splitResult[0]);
+                            noReply = "reply";
                         }
                     }
+                }
+                if (noReply == "noreply")
+                {
+                    Console.WriteLine("False");
                 }
                 Console.WriteLine("");
             }
@@ -438,7 +448,7 @@ namespace PrologEmbedding
         {
             bool endsInPeriod = true;
             char[] charsToTrim = {'.', ' '};
-            string[] lines = System.IO.File.ReadAllLines(@"familytree.txt");
+            string[] lines = System.IO.File.ReadAllLines(@"familytreeunit.txt");
             for (int i = 0; i < lines.Length; i++)
             {
                 endsInPeriod = lines[i].EndsWith(".");
