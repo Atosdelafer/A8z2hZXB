@@ -63,8 +63,11 @@ Placeholder
 #Results (1)
 
 * Query: "male(dicky)" Result: True. Expected result: True.
+
 * Query: "male(*in the KB*)" Result: True. Expected result: True.
+
 * Query: "male(andrew)" Result: False. Expected result: False.
+
 * Query: "parent(elmer, don)." Result: True. Expected result: True.
 
 #Results (2)
@@ -123,6 +126,11 @@ Multiple internal variables not unified correctly:
 
 > american(anne).
 
+
+
+#Results (3)
+
+
 * Query: american(X). Result: StackOverflowException. Expected result: *long list of X-Y-assignments*.
 
 Infinite recursion:
@@ -130,7 +138,6 @@ Infinite recursion:
 > american(X) :- ancestor(anne,X).
 
 > ancestor(X,Y) :- parent(X,Somebody),ancestor(Somebody,Y).
-
 
 #Reflection (1)
 
