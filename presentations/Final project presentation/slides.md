@@ -9,10 +9,10 @@ sansfont: Ubuntu Light
 
 # Contents
 
-* Problem definition  1 min 
-* Methodolology       1 min
-* Implementation      6 min  4s
-* Results             2 min  3s
+* Problem definition  0.5 min 
+* Methodolology       0.5 min
+* Implementation      6 min
+* Results             2 min
 * Reflection          2 min  
 
 
@@ -62,24 +62,89 @@ Placeholder
 
 #Results (1)
 
-Placeholder
+* Query: "male(dicky)" Result: True. Expected result: True.
+* Query: "male(*in the KB*)" Result: True. Expected result: True.
+* Query: "male(andrew)" Result: False. Expected result: False.
+* Query: "parent(elmer, don)." Result: True. Expected result: True.
 
 #Results (2)
 
-Placeholder
+* Query: "female(X)." Result: X = anne.
+X = rosie.
+X = esther.
+X = mildred.
+X = greatgramma.
+X = mia.
+X = god. Expected result: same
+
+* Query: "parent(X, anne)." Result: X = don.
+X = rosie. Expected result: same.
+
+* Query: "brother(X, Y)." Result: X = dicky, Y = rosie.
+X = y = dicky.
+X = y = randy.
+X = randy, Y = mike.
+X = randy, Y = anne.
+X = Y = randy
+X = randy, Y = mike.
+X = randy, Y = anne.
+X = mike, Y = randy.
+X = randy, Y = anne.
+X = Y = mike.
+X = mike, Y = anne.
+X = Y = don.
+X = Y = don.
+X = Y = blair.
+X = Y = mel.
+X = Y = teo.
+Expected result: same.
+
+> brother(X,Y) :-  male(X),parent(Somebody,X),parent(Somebody,Y).
+
 
 #Results (3)
 
-Placeholder
+* Query: "uncle(X, teo)." Result: XX = dicky.
+X = dicky.
+X = randy.
+X = randy.
+X = randy.
+X = mike.
+X = mike.
+X = mike.
+X = don.
+X = mel. Expected result: false.
+
+Multiple internal variables not unified correctly:
+
+> uncle(X,Y) :- brother(X,Par),parent(Par,Y).
+
+* Query: "american(anne)" Result: True. Expected result: True.
+
+> american(anne).
+
+* Query: american(X). Result: StackOverflowException. Expected result: *long list of X-Y-assignments*.
+
+Infinite recursion:
+
+> american(X) :- ancestor(anne,X).
+
+> ancestor(X,Y) :- parent(X,Somebody),ancestor(Somebody,Y).
+
 
 #Reflection (1)
 
-Placeholder
+* Working implementation.
+
+* Nontrivial queries.
+
+* Actually useful.
 
 #Reflection (2)
 
-Placeholder
+* Large group, sequential project in nature.
 
+* Unification and backtracking much more complicated than expected with lots of edge cases.
 
 <!-- Local Variables:  -->
 <!-- pandoc/write: beamer -->
